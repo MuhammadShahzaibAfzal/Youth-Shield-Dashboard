@@ -12,9 +12,12 @@ import { getErrorMessage } from "@/lib/utils";
 import type { ICategory } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import slugify from "slugify";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { FaInfoCircle } from "react-icons/fa";
 
 interface FormState {
   title: string;
@@ -24,17 +27,23 @@ interface FormState {
   slug: string;
   metaTitle: string;
   metaDescription: string;
+  shortDescription?: string;
+  isFeatured?: boolean;
+  cardImage?: string | File | null;
 }
 
 const AddNews = () => {
   const [formData, setFormData] = useState<FormState>({
     title: "",
     content: "",
+    shortDescription: "",
+    isFeatured: false,
     coverImage: "",
     category: "",
     slug: "",
     metaTitle: "",
     metaDescription: "",
+    cardImage: "",
   });
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -73,6 +82,7 @@ const AddNews = () => {
     const data = new FormData();
     data.append("title", formData.title);
     data.append("content", formData.content);
+    data.append("shortDescription", formData.shortDescription || "");
     data.append("category", formData.category);
     data.append(
       "SEO",
@@ -86,8 +96,27 @@ const AddNews = () => {
       data.append("coverImage", formData.coverImage);
     }
 
+    if (formData.cardImage && formData.cardImage !== null) {
+      data.append("cardImage", formData.cardImage);
+    }
+
     mutation.mutate(data);
   };
+
+  useEffect(() => {
+    if (formData.title) {
+      const slug = slugify(formData.title, {
+        lower: true,
+        strict: true,
+        trim: true,
+        remove: /[*+~.()'"!:@]/g,
+      });
+      setFormData((prevData) => ({
+        ...prevData,
+        slug,
+      }));
+    }
+  }, [formData.title]);
 
   return (
     <div>
@@ -118,17 +147,47 @@ const AddNews = () => {
             />
           </div>
         </div>
+        <div className="flex gap-8">
+          <div>
+            <Label>Cover Image</Label>
+            <ImagePreview
+              id="news-cover-image"
+              image={formData.coverImage}
+              onEdit={(file) => {
+                setFormData((prevData) => ({
+                  ...prevData,
+                  coverImage: file,
+                }));
+              }}
+            />
+          </div>
+          <div>
+            <Label>Card Image </Label>
+            <ImagePreview
+              id="news-card-image"
+              image={formData.cardImage || ""}
+              onEdit={(file) => {
+                setFormData((prevData) => ({
+                  ...prevData,
+                  cardImage: file,
+                }));
+              }}
+            />
+          </div>
+        </div>
         <div>
-          <Label>Cover Image</Label>
-          <ImagePreview
-            id="news-cover-image"
-            image={formData.coverImage}
-            onEdit={(file) => {
-              setFormData((prevData) => ({
-                ...prevData,
-                coverImage: file,
-              }));
-            }}
+          <Label>
+            Short Description{" "}
+            <Tooltip>
+              <TooltipTrigger>
+                <FaInfoCircle className="w-4 h-4" />
+              </TooltipTrigger>
+              <TooltipContent>This will be used in the news card.</TooltipContent>
+            </Tooltip>
+          </Label>
+          <Textarea
+            value={formData.shortDescription}
+            onChange={(e) => handleChange("shortDescription", e.target.value)}
           />
         </div>
         <div>

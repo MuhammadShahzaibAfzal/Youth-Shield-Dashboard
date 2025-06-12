@@ -31,17 +31,7 @@ export interface INews {
   createdAt: Date;
   updatedAt: Date;
   SEO: ISEO;
-}
-
-export interface IWebinar {
-  _id: string;
-  title: string;
-  description?: string;
-  date: Date;
-  time: string;
-  image: string;
-  link?: string;
-  onDemand: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  shortDescription?: string;
+  isFeatured: boolean;
+  cardImage?: string;
 }

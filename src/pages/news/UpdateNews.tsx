@@ -20,10 +20,13 @@ interface FormState {
   title: string;
   content: string;
   coverImage: string | File | null;
+  cardImage: string | File | null;
   category: string;
   slug: string;
   metaTitle: string;
   metaDescription: string;
+  shortDescription?: string;
+  isFeatured?: boolean;
 }
 
 const UpdateNews = () => {
@@ -36,6 +39,9 @@ const UpdateNews = () => {
     slug: "",
     metaTitle: "",
     metaDescription: "",
+    shortDescription: "",
+    isFeatured: false,
+    cardImage: "",
   });
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -63,6 +69,9 @@ const UpdateNews = () => {
         slug: newsData.SEO?.slug || "",
         metaTitle: newsData.SEO?.metaTitle || "",
         metaDescription: newsData.SEO?.metaDescription || "",
+        shortDescription: newsData.shortDescription,
+        isFeatured: newsData.isFeatured,
+        cardImage: newsData.cardImage || "",
       });
     }
   }, [newsData]);
@@ -97,6 +106,7 @@ const UpdateNews = () => {
     data.append("title", formData.title);
     data.append("content", formData.content);
     data.append("category", formData.category);
+    data.append("shortDescription", formData.shortDescription || "");
     data.append(
       "SEO",
       JSON.stringify({
@@ -112,6 +122,10 @@ const UpdateNews = () => {
     } else if (formData.coverImage === null) {
       // Handle case where image was removed
       data.append("removeImage", "true");
+    }
+
+    if (formData.cardImage && formData.cardImage instanceof File) {
+      data.append("cardImage", formData.cardImage);
     }
 
     mutation.mutate(data);
@@ -164,23 +178,52 @@ const UpdateNews = () => {
             />
           </div>
         </div>
+        <div className="flex gap-8">
+          <div>
+            <Label>Cover Image</Label>
+            <ImagePreview
+              id="news-cover-image"
+              image={formData.coverImage}
+              onEdit={(file) => {
+                setFormData((prevData) => ({
+                  ...prevData,
+                  coverImage: file,
+                }));
+              }}
+              onRemove={() => {
+                setFormData((prevData) => ({
+                  ...prevData,
+                  coverImage: null,
+                }));
+              }}
+            />
+          </div>
+
+          <div>
+            <Label>Card Image</Label>
+            <ImagePreview
+              id="news-card-image"
+              image={formData.cardImage}
+              onEdit={(file) => {
+                setFormData((prevData) => ({
+                  ...prevData,
+                  cardImage: file,
+                }));
+              }}
+              onRemove={() => {
+                setFormData((prevData) => ({
+                  ...prevData,
+                  cardImage: null,
+                }));
+              }}
+            />
+          </div>
+        </div>
         <div>
-          <Label>Cover Image</Label>
-          <ImagePreview
-            id="news-cover-image"
-            image={formData.coverImage}
-            onEdit={(file) => {
-              setFormData((prevData) => ({
-                ...prevData,
-                coverImage: file,
-              }));
-            }}
-            onRemove={() => {
-              setFormData((prevData) => ({
-                ...prevData,
-                coverImage: null,
-              }));
-            }}
+          <Label>Short Description</Label>
+          <Textarea
+            value={formData.shortDescription}
+            onChange={(e) => handleChange("shortDescription", e.target.value)}
           />
         </div>
         <div>
