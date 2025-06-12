@@ -16,6 +16,10 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { FaInfoCircle } from "react-icons/fa";
+import slugify from "slugify";
+
 interface FormState {
   title: string;
   content: string;
@@ -131,6 +135,21 @@ const UpdateNews = () => {
     mutation.mutate(data);
   };
 
+  useEffect(() => {
+    if (formData.title) {
+      const slug = slugify(formData.title, {
+        lower: true,
+        remove: /[*+~.()'"!:@]/g,
+        strict: true,
+        trim: true,
+      });
+      setFormData((prevData) => ({
+        ...prevData,
+        slug,
+      }));
+    }
+  }, [formData.title]);
+
   if (isLoading || isLoadingCategories) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -220,7 +239,15 @@ const UpdateNews = () => {
           </div>
         </div>
         <div>
-          <Label>Short Description</Label>
+          <Label>
+            Short Description{" "}
+            <Tooltip>
+              <TooltipTrigger>
+                <FaInfoCircle className="w-4 h-4" />
+              </TooltipTrigger>
+              <TooltipContent>This will be used in the news card.</TooltipContent>
+            </Tooltip>
+          </Label>
           <Textarea
             value={formData.shortDescription}
             onChange={(e) => handleChange("shortDescription", e.target.value)}
