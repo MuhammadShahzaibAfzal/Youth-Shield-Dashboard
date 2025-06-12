@@ -9,6 +9,8 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import NewsManagement from "./pages/news/NewsManagement";
 import AddNews from "./pages/news/AddNews";
 import UpdateNews from "./pages/news/UpdateNews";
+import ScreeningsPage from "./pages/screenings/ScreeningsPage";
+import ScreeningDetailsPage from "./pages/screenings/ScreeningDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +49,14 @@ const router = createBrowserRouter([
           {
             path: "category-management",
             element: <CategoryPage />,
+          },
+          {
+            path: "screenings",
+            element: <ScreeningsPage />,
+          },
+          {
+            path: "screenings/:id",
+            element: <ScreeningDetailsPage />,
           },
         ],
       },

@@ -9,7 +9,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { NavLink } from "react-router-dom";
-import { MdOutlineDashboard, MdOutlineCategory, MdLogout } from "react-icons/md";
+import {
+  MdOutlineDashboard,
+  MdOutlineCategory,
+  MdLogout,
+  MdAssignment,
+} from "react-icons/md";
 import { FaNewspaper, FaRegUser } from "react-icons/fa";
 import { useTheme } from "./theme-provider";
 import useLogout from "@/hooks/useLogout";
@@ -19,6 +24,11 @@ const items = [
     title: "Dashboard",
     url: "/dashboard",
     icon: MdOutlineDashboard,
+  },
+  {
+    title: "Health Screenings",
+    url: "/dashboard/screenings",
+    icon: MdAssignment,
   },
   {
     title: "News Management",

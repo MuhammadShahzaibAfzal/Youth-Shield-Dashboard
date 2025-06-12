@@ -35,3 +35,29 @@ export interface INews {
   isFeatured: boolean;
   cardImage?: string;
 }
+
+export interface IOption {
+  _id?: string;
+  text: string;
+  score: number;
+}
+
+export interface IQuestion {
+  _id?: string;
+  text: string;
+  type: "multiple" | "boolean";
+  options: IOption[];
+  order: number;
+}
+
+export interface IScreening {
+  _id?: string;
+  name: string;
+  slug: string;
+  description?: string;
+  status: "active" | "inactive" | "draft";
+  imageURL?: string;
+  questions: IQuestion[];
+  createdAt: Date;
+  updatedAt: Date;
+}

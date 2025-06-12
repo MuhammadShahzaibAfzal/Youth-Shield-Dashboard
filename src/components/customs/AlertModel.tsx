@@ -15,6 +15,9 @@ interface AlertModelProps {
   onCancel?: () => void;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  children?: React.ReactNode;
+  buttonText?: string;
+  className?: string;
 }
 const AlertModel = ({
   title,
@@ -23,17 +26,23 @@ const AlertModel = ({
   isOpen,
   setIsOpen,
   onCancel,
+  children,
+  buttonText,
+  className,
 }: AlertModelProps) => {
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogContent>
+      <AlertDialogContent className={className}>
         <AlertDialogHeader>
           <AlertDialogTitle>{title}</AlertDialogTitle>
           <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
+        {children}
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onCancel}>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={onConfirm}>Continue</AlertDialogAction>
+          <AlertDialogAction onClick={onConfirm}>
+            {buttonText || "Continue"}
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

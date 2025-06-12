@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 export function Model({
   children,
@@ -19,6 +20,7 @@ export function Model({
   btnClassName,
   isOpen,
   setIsOpen,
+  isLoading,
 }: {
   children: React.ReactNode;
   title: string;
@@ -29,6 +31,7 @@ export function Model({
   btnClassName?: string;
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading?: boolean;
 }) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -39,8 +42,8 @@ export function Model({
         </DialogHeader>
         {children}
         <DialogFooter>
-          <Button className={btnClassName} onClick={onClick}>
-            {buttonText}
+          <Button disabled={isLoading} className={btnClassName} onClick={onClick}>
+            {buttonText} {isLoading && <Loader2 className="animate-spin" />}
           </Button>
         </DialogFooter>
       </DialogContent>
