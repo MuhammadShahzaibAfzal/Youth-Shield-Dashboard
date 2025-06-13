@@ -16,6 +16,7 @@ import { Loader2 } from "lucide-react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { MdDragIndicator } from "react-icons/md";
+import { toast } from "sonner";
 
 interface IProps {
   question: IQuestion;
@@ -106,6 +107,15 @@ const QuestionAccordian = ({
   };
 
   const handleSave = () => {
+    // VALIDATION. Not Options texts and question text is empty
+    if (!question.text) {
+      toast.error("Question text is required");
+      return;
+    }
+    if (question.options?.some((option) => option.text === "")) {
+      toast.error("Option text is required");
+      return;
+    }
     const formData = new FormData();
     formData.append("questions", JSON.stringify(questions));
     handleUpdate(formData);
@@ -171,10 +181,25 @@ const QuestionAccordian = ({
                   <Input
                     className="w-20 border-0 border-l rounded-none bg-gray-100 shadow-none focus:ring-0 focus-visible:ring-0"
                     placeholder="Points"
+                    type="number"
+                    min="0"
                     value={option.score}
-                    onChange={(e) =>
-                      handleOptionChange(option._id as string, "score", e.target.value)
-                    }
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      // Allow empty string or positive numbers
+                      if (value === "" || /^\d+$/.test(value)) {
+                        handleOptionChange(
+                          option._id as string,
+                          "score",
+                          value === "" ? "" : (Number(value) as any)
+                        );
+                      }
+                    }}
+                    onBlur={(e) => {
+                      if (e.target.value === "") {
+                        handleOptionChange(option._id as string, "score", 0 as any);
+                      }
+                    }}
                   />
                   <button
                     onClick={() => removeOption(option._id as string)}

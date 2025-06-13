@@ -55,13 +55,13 @@ const ScreeningDetailsPage = () => {
       {
         text: "",
         _id: id,
-        options: [
-          {
+        options: Array(4)
+          .fill(null)
+          .map(() => ({
             text: "",
             score: 0,
             _id: uuidv4(),
-          },
-        ],
+          })),
         order: highestOrder + 1,
         type: "multiple",
       },
