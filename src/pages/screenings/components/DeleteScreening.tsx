@@ -30,7 +30,12 @@ const DeleteScreening = ({ screening }: { screening: IScreening }) => {
   };
   return (
     <div>
-      <Button size={"icon"} variant={"destructive"} onClick={() => setIsModalOpen(true)}>
+      <Button
+        size={"icon"}
+        variant={"default"}
+        className="bg-black hover:bg-black/90"
+        onClick={() => setIsModalOpen(true)}
+      >
         <FaTrash />
       </Button>
       <AlertModel

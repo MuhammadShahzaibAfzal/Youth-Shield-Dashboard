@@ -28,13 +28,13 @@ const ScreeningDetailsPage = () => {
 
   return (
     <div>
-      <Card className="flex flex-row items-center gap-4">
+      <Card className="flex flex-row items-center gap-4 py-0 overflow-hidden">
         <img
           src={screening.imageURL}
           alt={screening.name}
-          className="w-[250px] h-[200px] object-contain"
+          className="w-[250px] h-[200px] object-cover"
         />
-        <div className="px-4 pt-4">
+        <div className="px-4">
           <h2 className="text-xl font-semibold mb-2">{screening.name}</h2>
           <p className="text-muted-foreground">{screening.description}</p>
           <div className="flex justify-start gap-4 mt-4">
