@@ -1,24 +1,54 @@
 import { getScreening } from "@/http/screening";
-import type { IScreening } from "@/types";
+import type { IQuestion, IScreening } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import UpdateScreening from "./components/UpdateScreening";
 import DeleteScreening from "./components/DeleteScreening";
 import { Card } from "@/components/ui/card";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import { Accordion } from "@/components/ui/accordion";
+import QuestionAccordian from "./components/QuestionAccordian";
+import { Button } from "@/components/ui/button";
+import { FaPlus } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 const ScreeningDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
+  const [questions, setQuestions] = useState<IQuestion[]>([]);
+  const [openDefault, setOpenDefault] = useState<string | null>(null);
   const { data: screening, isLoading } = useQuery<IScreening>({
     queryKey: ["screenings", id],
     queryFn: () => getScreening(id!),
     enabled: !!id,
   });
+
+  useEffect(() => {
+    if (!screening || !screening?.questions) return;
+    setQuestions(screening?.questions || []);
+  }, [screening]);
+
+  const handleAddQuestion = () => {
+    const highestOrder =
+      questions.length > 0 ? Math.max(...questions.map((q) => q.order)) : 1;
+    const id = uuidv4();
+    setQuestions((prevQuestions) => [
+      {
+        text: "",
+        _id: id,
+        options: [
+          {
+            text: "",
+            score: 0,
+            _id: uuidv4(),
+          },
+        ],
+        order: highestOrder + 1,
+        type: "multiple",
+      },
+      ...prevQuestions,
+    ]);
+    setOpenDefault(id);
+  };
 
   console.log("screening", screening);
 
@@ -43,39 +73,36 @@ const ScreeningDetailsPage = () => {
           </div>
         </div>
       </Card>
-      <h2 className="mt-4 mb-2 uppercase text-xl font-semibold">Questions</h2>
-
-      <Accordion className="w-full space-y-3" type="single" collapsible>
-        <AccordionItem value="item-1">
-          <AccordionTrigger className="border">How old are you?</AccordionTrigger>
-          <AccordionContent>
-            <p>Answer 1</p>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger className="border">
-            Are you a man or a woman?
-          </AccordionTrigger>
-          <AccordionContent>
-            <p>Answer 2</p>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger className="border">
-            Are you a man or a woman?
-          </AccordionTrigger>
-          <AccordionContent>
-            <p>Answer 2</p>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="item-2">
-          <AccordionTrigger className="border">
-            Are you a man or a woman?
-          </AccordionTrigger>
-          <AccordionContent>
-            <p>Answer 2</p>
-          </AccordionContent>
-        </AccordionItem>
+      <div className="flex mt-4 justify-between items-center gap-4">
+        <div>
+          <h2 className="mt-4 mb-2 uppercase text-xl font-semibold">Questions</h2>
+          {questions?.length === 0 && (
+            <p className="text-muted-foreground">No questions added yet. </p>
+          )}
+        </div>
+        <Button onClick={handleAddQuestion}>
+          <FaPlus /> Add Question
+        </Button>
+      </div>
+      <Accordion
+        value={openDefault || undefined}
+        className="w-full my-4 space-y-3"
+        type="single"
+        collapsible
+        onValueChange={(value) => setOpenDefault(value as string)}
+      >
+        {questions?.map((question) => {
+          return (
+            <QuestionAccordian
+              key={question._id}
+              question={question}
+              setQuestions={setQuestions}
+              screeningID={screening._id as string}
+              questions={questions}
+              screening={screening}
+            />
+          );
+        })}
       </Accordion>
     </div>
   );
