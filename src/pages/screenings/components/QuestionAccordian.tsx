@@ -8,17 +8,22 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { IQuestion, IScreening } from "@/types";
-import { FaPlus, FaSave } from "react-icons/fa";
+import { FaPlus, FaSave, FaTrash } from "react-icons/fa";
 import { v4 as uuidv4 } from "uuid";
 import DeleteQuestion from "./DeleteQuestion";
 import useUpdateScreening from "@/hooks/useUpdateScreening";
 import { Loader2 } from "lucide-react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { MdDragIndicator } from "react-icons/md";
+
 interface IProps {
   question: IQuestion;
   setQuestions: React.Dispatch<React.SetStateAction<IQuestion[]>>;
   screeningID: string;
   questions: IQuestion[];
   screening: IScreening;
+  index: number;
 }
 const QuestionAccordian = ({
   question,
@@ -26,7 +31,11 @@ const QuestionAccordian = ({
   screeningID,
   questions,
   screening,
+  index,
 }: IProps) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({
+    id: question._id as string,
+  });
   const { handleUpdate, isLoading } = useUpdateScreening({ screeningID });
   const handleQuestionChange = (key: string, value: string) => {
     setQuestions((prevQuestions) => {
@@ -81,17 +90,36 @@ const QuestionAccordian = ({
     });
   };
 
+  const removeOption = (_id: string) => {
+    setQuestions((prevQuestions) => {
+      const updatedQuestions = prevQuestions.map((q) => {
+        if (q._id === question._id) {
+          return {
+            ...q,
+            options: q.options?.filter((option) => option._id !== _id),
+          };
+        }
+        return q;
+      });
+      return updatedQuestions;
+    });
+  };
+
   const handleSave = () => {
     const formData = new FormData();
     formData.append("questions", JSON.stringify(questions));
     handleUpdate(formData);
   };
   return (
-    <AccordionItem value={question._id as string}>
+    <AccordionItem
+      value={question._id as string}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      ref={setNodeRef}
+    >
       <AccordionTrigger
         className="border"
         RightDiv={
-          <div>
+          <div className="flex items-center gap-3">
             <DeleteQuestion
               question={question as any}
               setQuestions={setQuestions}
@@ -100,11 +128,25 @@ const QuestionAccordian = ({
             />
           </div>
         }
+        LeftDiv={
+          <div className="flex items-center gap-3">
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              {...attributes}
+              {...listeners}
+            >
+              <MdDragIndicator size={20} />
+            </button>
+            <span>{index + 1}.</span>
+          </div>
+        }
       >
         {question.text || "New Question"}
       </AccordionTrigger>
       <AccordionContent className="py-0">
-        <div className="border space-y-4 border-t-0 p-4">
+        <div className="border bg-secondary space-y-7 border-t-0 p-4">
           <div>
             <Label>Question</Label>
             <Input
@@ -112,11 +154,13 @@ const QuestionAccordian = ({
               onChange={(e) => handleQuestionChange("text", e.target.value)}
             />
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid  grid-cols-2 gap-6">
             {question.options?.map((option, index) => (
               <div key={index}>
-                <Label>Option {index + 1}</Label>
-                <div className="flex gap-4 rounded-lg py-0 border shadow focus:ring-1 focus-visible:ring-1">
+                <div className="flex mb-1 justify-between items-center">
+                  <Label>Option {index + 1}</Label>
+                </div>
+                <div className="flex  rounded-lg py-0 border shadow focus:ring-1 focus-visible:ring-1">
                   <Input
                     value={option.text}
                     className="flex-1 border-0 shadow-none focus:ring-0 focus-visible:ring-0"
@@ -132,6 +176,12 @@ const QuestionAccordian = ({
                       handleOptionChange(option._id as string, "score", e.target.value)
                     }
                   />
+                  <button
+                    onClick={() => removeOption(option._id as string)}
+                    className="w-10 flex justify-center items-center"
+                  >
+                    <FaTrash />
+                  </button>
                 </div>
               </div>
             ))}

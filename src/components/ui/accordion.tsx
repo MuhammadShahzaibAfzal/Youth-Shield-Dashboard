@@ -5,7 +5,6 @@ import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import { Minus, Plus } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { FaRegHandPointRight } from "react-icons/fa";
 
 function Accordion({ ...props }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
@@ -28,9 +27,11 @@ function AccordionTrigger({
   className,
   children,
   RightDiv,
+  LeftDiv,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
   RightDiv?: React.ReactNode;
+  LeftDiv?: React.ReactNode;
 }) {
   return (
     <AccordionPrimitive.Header className="flex">
@@ -43,7 +44,7 @@ function AccordionTrigger({
         {...props}
       >
         <div className="flex items-center gap-2">
-          <FaRegHandPointRight className="shrink-0 group-data-[state=open]:text-white text-primary text-xl data-[state=open]:text-white" />
+          {LeftDiv}
           {children}
         </div>
         <div className="gap-2 flex items-center">

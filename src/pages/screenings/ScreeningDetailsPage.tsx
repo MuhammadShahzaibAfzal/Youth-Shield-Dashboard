@@ -11,6 +11,10 @@ import { Button } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { closestCenter, DndContext, type DragEndEvent } from "@dnd-kit/core";
+import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import useUpdateScreening from "@/hooks/useUpdateScreening";
 
 const ScreeningDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -21,11 +25,27 @@ const ScreeningDetailsPage = () => {
     queryFn: () => getScreening(id!),
     enabled: !!id,
   });
+  const { handleUpdate } = useUpdateScreening({ screeningID: id! });
 
   useEffect(() => {
     if (!screening || !screening?.questions) return;
     setQuestions(screening?.questions || []);
   }, [screening]);
+
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
+    if (active.id !== over?.id) {
+      console.log(active.id, over?.id);
+      const oldIndex = questions.findIndex((q) => q._id === active.id);
+      const newIndex = questions.findIndex((q) => q._id === over?.id);
+      setQuestions((prevQuestions) => arrayMove(prevQuestions, oldIndex, newIndex));
+      const formData = new FormData();
+      formData.append(
+        "questions",
+        JSON.stringify(arrayMove(questions, oldIndex, newIndex))
+      );
+      handleUpdate(formData);
+    }
+  };
 
   const handleAddQuestion = () => {
     const highestOrder =
@@ -49,8 +69,6 @@ const ScreeningDetailsPage = () => {
     ]);
     setOpenDefault(id);
   };
-
-  console.log("screening", screening);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -84,26 +102,45 @@ const ScreeningDetailsPage = () => {
           <FaPlus /> Add Question
         </Button>
       </div>
-      <Accordion
-        value={openDefault || undefined}
-        className="w-full my-4 space-y-3"
-        type="single"
-        collapsible
-        onValueChange={(value) => setOpenDefault(value as string)}
+      <DndContext
+        collisionDetection={closestCenter}
+        onDragEnd={handleDragEnd}
+        modifiers={[restrictToVerticalAxis]}
       >
-        {questions?.map((question) => {
-          return (
-            <QuestionAccordian
-              key={question._id}
-              question={question}
-              setQuestions={setQuestions}
-              screeningID={screening._id as string}
-              questions={questions}
-              screening={screening}
-            />
-          );
-        })}
-      </Accordion>
+        <SortableContext
+          items={
+            questions?.map((q) => {
+              return {
+                ...q,
+                id: q._id as string,
+              };
+            }) || []
+          }
+          strategy={rectSortingStrategy}
+        >
+          <Accordion
+            value={openDefault || undefined}
+            className="w-full my-4 space-y-3"
+            type="single"
+            collapsible
+            onValueChange={(value) => setOpenDefault(value as string)}
+          >
+            {questions?.map((question, index) => {
+              return (
+                <QuestionAccordian
+                  key={question._id}
+                  question={question}
+                  setQuestions={setQuestions}
+                  screeningID={screening._id as string}
+                  questions={questions}
+                  screening={screening}
+                  index={index}
+                />
+              );
+            })}
+          </Accordion>
+        </SortableContext>
+      </DndContext>
     </div>
   );
 };
