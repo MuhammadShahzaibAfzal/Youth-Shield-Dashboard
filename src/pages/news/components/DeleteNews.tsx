@@ -33,7 +33,7 @@ const DeleteNews = ({ news }: { news: INews }) => {
 
   return (
     <>
-      <Button size={"icon"} variant={"destructive"} onClick={() => setIsModalOpen(true)}>
+      <Button size={"icon"} variant={"outline"} onClick={() => setIsModalOpen(true)}>
         <FaTrash />
       </Button>
       <AlertModel

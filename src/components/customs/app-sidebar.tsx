@@ -36,7 +36,7 @@ const items = [
     icon: FaNewspaper,
   },
   {
-    title: "Category Management",
+    title: "News Category Management",
     url: "/dashboard/category-management",
     icon: MdOutlineCategory,
   },

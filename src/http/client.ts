@@ -33,7 +33,7 @@ const refreshToken = async () => {
       }
     );
     const expiryTime = getExpiryTime();
-    localStorage.setItem("carehalo-token-expiry", expiryTime.toString());
+    localStorage.setItem("youthshield-token-expiry", expiryTime.toString());
     useAuthStore.getState().setToken(data.accessToken);
   } catch (error) {
     console.error("Token refresh error", error);

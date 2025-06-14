@@ -40,11 +40,11 @@ const UpdateCategory = ({ category }: { category: ICategory }) => {
   return (
     <div>
       <Button
-        variant={"warning"}
         size={"icon"}
         onClick={() => {
           setIsModalOpen(true);
         }}
+        variant={"outline"}
       >
         <FaPencilAlt />
       </Button>

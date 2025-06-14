@@ -141,13 +141,14 @@ const QuestionAccordian = ({
         LeftDiv={
           <div className="flex items-center gap-3">
             <button
+              className="cursor-grabbing"
               onClick={(e) => {
                 e.stopPropagation();
               }}
               {...attributes}
               {...listeners}
             >
-              <MdDragIndicator size={20} />
+              <MdDragIndicator size={24} />
             </button>
             <span>{index + 1}.</span>
           </div>

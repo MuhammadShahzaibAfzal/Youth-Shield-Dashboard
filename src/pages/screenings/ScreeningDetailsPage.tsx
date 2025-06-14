@@ -52,6 +52,7 @@ const ScreeningDetailsPage = () => {
       questions.length > 0 ? Math.max(...questions.map((q) => q.order)) : 1;
     const id = uuidv4();
     setQuestions((prevQuestions) => [
+      ...prevQuestions,
       {
         text: "",
         _id: id,
@@ -65,7 +66,6 @@ const ScreeningDetailsPage = () => {
         order: highestOrder + 1,
         type: "multiple",
       },
-      ...prevQuestions,
     ]);
     setOpenDefault(id);
   };
@@ -80,9 +80,9 @@ const ScreeningDetailsPage = () => {
         <img
           src={screening.imageURL}
           alt={screening.name}
-          className="w-[250px] h-[200px] object-cover"
+          className="w-[300px] h-[300px] object-cover"
         />
-        <div className="px-4">
+        <div className="px-4 py-4">
           <h2 className="text-xl font-semibold mb-2">{screening.name}</h2>
           <p className="text-muted-foreground">{screening.description}</p>
           <div className="flex justify-start gap-4 mt-4">

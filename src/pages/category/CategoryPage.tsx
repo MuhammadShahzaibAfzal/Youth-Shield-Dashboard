@@ -47,9 +47,9 @@ const CategoryPage = () => {
                 <TableCell>{formatTimestamp(category?.updatedAt)}</TableCell>
                 <TableCell>{formatTimestamp(category?.createdAt)}</TableCell>
                 <TableCell>
-                  <div className="flex items-center gap-2">
-                    <DeleteCategory category={category} />
+                  <div className="flex items-center gap-2.5">
                     <UpdateCategory category={category} />
+                    <DeleteCategory category={category} />
                   </div>
                 </TableCell>
               </TableRow>

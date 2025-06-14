@@ -60,8 +60,8 @@ const NewsManagement = () => {
               <TableCell>{newsItem.category?.name}</TableCell>
 
               <TableCell className="flex gap-2 items-center">
-                <div className="flex gap-2">
-                  <Button size="icon" asChild>
+                <div className="flex gap-2.5">
+                  <Button variant="outline" size="icon" asChild>
                     <a
                       href={`${import.meta.env.VITE_WEBSITE_DOMAIN}/news/${
                         newsItem.SEO?.slug
@@ -72,7 +72,7 @@ const NewsManagement = () => {
                       <FaEye />
                     </a>
                   </Button>
-                  <Button variant="warning" size="icon" asChild>
+                  <Button variant="outline" size="icon" asChild>
                     <Link to={`/dashboard/news-management/update/${newsItem._id}`}>
                       <FaEdit />
                     </Link>

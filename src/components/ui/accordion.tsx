@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
-import { Minus, Plus } from "lucide-react";
-
 import { cn } from "@/lib/utils";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 function Accordion({ ...props }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
   return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
@@ -47,10 +46,10 @@ function AccordionTrigger({
           {LeftDiv}
           {children}
         </div>
-        <div className="gap-2 flex items-center">
+        <div className="gap-4 flex items-center">
           {RightDiv}
-          <Plus className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden" />
-          <Minus className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden" />
+          <FaChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:hidden" />
+          <FaChevronUp className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=closed]:hidden" />
         </div>
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>

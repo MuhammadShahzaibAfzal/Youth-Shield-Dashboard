@@ -35,7 +35,7 @@ const LoginPage = () => {
       setToken(responseData?.data?.accessToken);
       const { data } = await refetch();
       const expiryTime = getExpiryTime();
-      localStorage.setItem("carehalo-token-expiry", expiryTime.toString());
+      localStorage.setItem("youthshield-token-expiry", expiryTime.toString());
       setUser(data?.data?.user);
       return;
     },

@@ -21,7 +21,7 @@ export const useAuthStore = create<AuthState>()(
         setToken: (token: string | null) => set(() => ({ token: token })),
       }),
       {
-        name: "carehalo-auth-storage",
+        name: "youthshield-auth-storage",
         partialize: (state) => ({ token: state.token }),
       }
     )

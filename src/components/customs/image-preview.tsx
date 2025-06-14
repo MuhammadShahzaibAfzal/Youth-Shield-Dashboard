@@ -15,6 +15,7 @@ const ImagePreview = ({
   textClassNames,
   iconClassNames,
   isDisabled = false,
+  resolution = "Recommended size: 1200×853 px",
 }: {
   image: string | File | null;
   onEdit: (file: File) => void;
@@ -26,6 +27,7 @@ const ImagePreview = ({
   iconClassNames?: string;
   textClassNames?: string;
   isDisabled?: boolean;
+  resolution?: string;
 }) => {
   const [imageUrl, setImageUrl] = useState(image);
 
@@ -107,7 +109,7 @@ const ImagePreview = ({
           disabled={isDisabled}
         />
       </div>
-      <span className="text-sm text-muted-foreground">Recommended size: 1200×853 px</span>
+      <span className="text-sm text-muted-foreground">{resolution}</span>
     </>
   );
 };

@@ -199,8 +199,8 @@ const UpdateNews = () => {
         </div>
         <div className="flex gap-8">
           <div>
-            <Label>Cover Image</Label>
             <ImagePreview
+              label="Cover Image"
               id="news-cover-image"
               image={formData.coverImage}
               onEdit={(file) => {
@@ -219,8 +219,8 @@ const UpdateNews = () => {
           </div>
 
           <div>
-            <Label>Card Image</Label>
             <ImagePreview
+              label="Card Image"
               id="news-card-image"
               image={formData.cardImage}
               onEdit={(file) => {
@@ -235,6 +235,7 @@ const UpdateNews = () => {
                   cardImage: null,
                 }));
               }}
+              resolution="Recommended size: 1000 x 667px"
             />
           </div>
         </div>

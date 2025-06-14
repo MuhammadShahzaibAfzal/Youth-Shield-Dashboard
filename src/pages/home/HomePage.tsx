@@ -20,6 +20,7 @@ const HomePage = () => {
     news: INews[];
     totalNews: number;
     totalCategories: number;
+    totalScreenings: number;
   }>({
     queryKey: ["latest-news"],
     queryFn: async () => {
@@ -31,7 +32,7 @@ const HomePage = () => {
   }
   const news = data?.news;
   const totalNews = data?.totalNews;
-  const totalCategories = data?.totalCategories;
+  const totalScreenings = data?.totalScreenings || 0;
   return (
     <div>
       <div className="grid grid-cols-2 gap-4 mb-4">
@@ -40,8 +41,8 @@ const HomePage = () => {
           <p className="text-2xl font-bold">{totalNews}</p>
         </Card>
         <Card className="flex-col justify-center items-center">
-          <h1 className="text-xl  font-bold uppercase">Total Categories</h1>
-          <p className="text-2xl font-bold">{totalCategories}</p>
+          <h1 className="text-xl  font-bold uppercase">Total Screening</h1>
+          <p className="text-2xl font-bold">{totalScreenings}</p>
         </Card>
       </div>
 
@@ -68,8 +69,8 @@ const HomePage = () => {
               <TableCell>{i?.category?.name}</TableCell>
 
               <TableCell className="flex gap-2 items-center">
-                <div className="flex gap-2">
-                  <Button size="icon" asChild>
+                <div className="flex gap-2.5">
+                  <Button variant={"outline"} size="icon" asChild>
                     <a
                       href={`${import.meta.env.VITE_WEBSITE_DOMAIN}/news/${i.SEO?.slug}`}
                       target="_blank"
@@ -77,7 +78,7 @@ const HomePage = () => {
                       <FaEye />
                     </a>
                   </Button>
-                  <Button variant="warning" size="icon" asChild>
+                  <Button variant={"outline"} size="icon" asChild>
                     <Link to={`/dashboard/news-management/update/${i._id}`}>
                       <FaEdit />
                     </Link>
