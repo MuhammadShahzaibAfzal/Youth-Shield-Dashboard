@@ -45,9 +45,17 @@ export interface IOption {
 export interface IQuestion {
   _id?: string;
   text: string;
-  type: "multiple" | "boolean";
+  type: "multiple" | "text" | "number" | "date" | "textarea" | "dropdown" | "radio";
   options: IOption[];
   order: number;
+}
+
+export interface ILevel {
+  _id: string;
+  name: string;
+  proposedSolution: string;
+  from: number;
+  to: number;
 }
 
 export interface IScreening {
@@ -58,6 +66,7 @@ export interface IScreening {
   status: "active" | "inactive" | "draft";
   imageURL?: string;
   questions: IQuestion[];
+  interpretations: ILevel[];
   createdAt: Date;
   updatedAt: Date;
 }

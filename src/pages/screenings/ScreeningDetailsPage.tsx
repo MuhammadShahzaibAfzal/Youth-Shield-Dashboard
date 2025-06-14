@@ -1,5 +1,5 @@
 import { getScreening } from "@/http/screening";
-import type { IQuestion, IScreening } from "@/types";
+import type { ILevel, IQuestion, IScreening } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import UpdateScreening from "./components/UpdateScreening";
@@ -13,6 +13,7 @@ import InterpretationsTab from "./tabs/InterpretationsTab";
 const ScreeningDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const [questions, setQuestions] = useState<IQuestion[]>([]);
+  const [interpretations, setInterpretations] = useState<ILevel[]>([]);
 
   const { data: screening, isLoading } = useQuery<IScreening>({
     queryKey: ["screenings", id],
@@ -21,8 +22,9 @@ const ScreeningDetailsPage = () => {
   });
 
   useEffect(() => {
-    if (!screening || !screening?.questions) return;
+    if (!screening) return;
     setQuestions(screening?.questions || []);
+    setInterpretations(screening?.interpretations || []);
   }, [screening]);
 
   if (isLoading) return <div>Loading...</div>;
@@ -60,7 +62,11 @@ const ScreeningDetailsPage = () => {
           />
         </TabsContent>
         <TabsContent value="interpretations">
-          <InterpretationsTab />
+          <InterpretationsTab
+            interpretations={interpretations}
+            setInterpretations={setInterpretations}
+            screening={screening}
+          />
         </TabsContent>
       </Tabs>
     </div>
