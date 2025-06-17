@@ -26,6 +26,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { defaultHeightOptions } from "@/lib/utils";
 
 interface IProps {
   question: IQuestion;
@@ -51,10 +52,29 @@ const QuestionAccordian = ({
     setQuestions((prevQuestions) => {
       const updatedQuestions = prevQuestions.map((q) => {
         if (q._id === question._id) {
-          return {
+          const updatedQuestion = {
             ...q,
             [key]: value,
           };
+
+          // When changing to height-weight type, add default options if none exist
+          if (key === "type" && value === "height-weight" && !q.heightOptions?.length) {
+            updatedQuestion.heightOptions = defaultHeightOptions.map((option) => ({
+              ...option,
+              _id: uuidv4(), // Generate new IDs for each option
+              weights: option.weights.map((weight) => ({
+                ...weight,
+                _id: uuidv4(), // Generate new IDs for each weight
+              })),
+            }));
+          }
+
+          // When changing from height-weight to another type, clear heightOptions
+          if (key === "type" && value !== "height-weight" && q.heightOptions) {
+            updatedQuestion.heightOptions = undefined;
+          }
+
+          return updatedQuestion;
         }
         return q;
       });
@@ -203,6 +223,7 @@ const QuestionAccordian = ({
     formData.append("questions", JSON.stringify(questions));
     handleUpdate(formData);
   };
+
   return (
     <AccordionItem
       value={question._id as string}
@@ -361,13 +382,12 @@ const QuestionAccordian = ({
                         </TableCell>
                       ))}
                       <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
+                        <button
                           onClick={() => removeHeightOption(heightOption._id as string)}
+                          className="cursor-pointer"
                         >
                           <FaTrash className="text-red-500" />
-                        </Button>
+                        </button>
                       </TableCell>
                     </TableRow>
                   ))}

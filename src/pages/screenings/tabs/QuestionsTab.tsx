@@ -52,6 +52,7 @@ const QuestionsTab = ({
             score: 0,
             _id: uuidv4(),
           })),
+
         order: highestOrder + 1,
         type: "multiple",
       },
