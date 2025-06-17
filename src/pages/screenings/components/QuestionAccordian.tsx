@@ -198,10 +198,7 @@ const QuestionAccordian = ({
       toast.error("Question text is required");
       return;
     }
-    // if (question.options?.some((option) => option.text === "")) {
-    //   toast.error("Option text is required");
-    //   return;
-    // }
+
     const formData = new FormData();
     formData.append("questions", JSON.stringify(questions));
     handleUpdate(formData);
