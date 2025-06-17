@@ -36,6 +36,18 @@ export interface INews {
   cardImage?: string;
 }
 
+export interface IWeightOption {
+  _id?: string;
+  weight: string;
+  score: number;
+}
+
+export interface IHeightOption {
+  _id?: string;
+  height: string;
+  weights: IWeightOption[];
+}
+
 export interface IOption {
   _id?: string;
   text: string;
@@ -45,8 +57,17 @@ export interface IOption {
 export interface IQuestion {
   _id?: string;
   text: string;
-  type: "multiple" | "text" | "number" | "date" | "textarea" | "dropdown" | "radio";
+  type:
+    | "multiple"
+    | "text"
+    | "number"
+    | "date"
+    | "textarea"
+    | "dropdown"
+    | "radio"
+    | "height-weight";
   options: IOption[];
+  heightOptions?: IHeightOption[];
   order: number;
 }
 

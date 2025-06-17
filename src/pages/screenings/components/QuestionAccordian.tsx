@@ -18,6 +18,14 @@ import { CSS } from "@dnd-kit/utilities";
 import { MdDragIndicator } from "react-icons/md";
 import { toast } from "sonner";
 import CustomSelect from "@/components/customs/CustomSelect";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 interface IProps {
   question: IQuestion;
@@ -107,6 +115,83 @@ const QuestionAccordian = ({
     });
   };
 
+  const addHeightOption = () => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((q) =>
+        q._id === question._id
+          ? {
+              ...q,
+              heightOptions: [
+                ...(q.heightOptions || []),
+                {
+                  _id: uuidv4(),
+                  height: "",
+                  weights: [
+                    { _id: uuidv4(), weight: "", score: 0 },
+                    { _id: uuidv4(), weight: "", score: 1 },
+                    { _id: uuidv4(), weight: "", score: 2 },
+                    { _id: uuidv4(), weight: "", score: 3 },
+                  ],
+                },
+              ],
+            }
+          : q
+      )
+    );
+  };
+
+  const removeHeightOption = (heightId: string) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((q) =>
+        q._id === question._id
+          ? {
+              ...q,
+              heightOptions: q.heightOptions?.filter((h) => h._id !== heightId) || [],
+            }
+          : q
+      )
+    );
+  };
+
+  const handleHeightChange = (heightId: string, value: string) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((q) =>
+        q._id === question._id
+          ? {
+              ...q,
+              heightOptions:
+                q.heightOptions?.map((h) =>
+                  h._id === heightId ? { ...h, height: value } : h
+                ) || [],
+            }
+          : q
+      )
+    );
+  };
+
+  const handleWeightChange = (heightId: string, weightId: string, value: string) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((q) =>
+        q._id === question._id
+          ? {
+              ...q,
+              heightOptions:
+                q.heightOptions?.map((h) =>
+                  h._id === heightId
+                    ? {
+                        ...h,
+                        weights: h.weights.map((w) =>
+                          w._id === weightId ? { ...w, weight: value } : w
+                        ),
+                      }
+                    : h
+                ) || [],
+            }
+          : q
+      )
+    );
+  };
+
   const handleSave = () => {
     // VALIDATION. Not Options texts and question text is empty
     if (!question.text) {
@@ -180,6 +265,7 @@ const QuestionAccordian = ({
                   { value: "number", label: "Number" },
                   { value: "textarea", label: "Textarea" },
                   { value: "dropdown", label: "Dropdown" },
+                  { value: "height-weight", label: "Height-Weight" },
                   // { value: "radio", label: "Radio" },
                 ]}
               />
@@ -234,6 +320,65 @@ const QuestionAccordian = ({
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {question?.type === "height-weight" && (
+            <div>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Height</TableHead>
+                    <TableHead>Weight (lbs) - 0 Point</TableHead>
+                    <TableHead>Weight (lbs) - 1 Point</TableHead>
+                    <TableHead>Weight (lbs) - 2 Point</TableHead>
+                    <TableHead>Weight (lbs) - 3 Point</TableHead>
+                    <TableHead>Actions</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {question.heightOptions?.map((heightOption) => (
+                    <TableRow key={heightOption._id}>
+                      <TableCell>
+                        <Input
+                          value={heightOption.height}
+                          onChange={(e) =>
+                            handleHeightChange(heightOption._id as string, e.target.value)
+                          }
+                          placeholder="e.g. 5'8"
+                        />
+                      </TableCell>
+                      {heightOption.weights.map((weight) => (
+                        <TableCell key={weight._id}>
+                          <Input
+                            value={weight.weight}
+                            onChange={(e) =>
+                              handleWeightChange(
+                                heightOption._id as string,
+                                weight._id as string,
+                                e.target.value
+                              )
+                            }
+                            placeholder={`Weight for ${weight.score} pts`}
+                          />
+                        </TableCell>
+                      ))}
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeHeightOption(heightOption._id as string)}
+                        >
+                          <FaTrash className="text-red-500" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <Button onClick={addHeightOption} variant="outline" className="mt-4">
+                <FaPlus className="mr-2" /> Add Height Option
+              </Button>
             </div>
           )}
 
