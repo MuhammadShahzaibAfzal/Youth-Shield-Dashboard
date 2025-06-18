@@ -1,36 +1,36 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import AlertModel from "@/components/customs/AlertModel";
 import { Button } from "@/components/ui/button";
-import { deleteScreening } from "@/http/screening";
-import type { IScreening } from "@/types";
+import { deleteContest } from "@/http/contest";
+import type { IContest } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-const DeleteScreening = ({ screening }: { screening: IScreening }) => {
+const DeleteContest = ({ contest }: { contest: IContest }) => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const deleteMutation = useMutation({
-    mutationFn: deleteScreening,
+    mutationFn: deleteContest,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["screenings"],
+        queryKey: ["contests"],
       });
-      toast.success("Screening deleted successfully");
-      navigate("/dashboard/screenings");
+      toast.success("Contest deleted successfully");
+      navigate("/dashboard/contests");
     },
     onError: (error: any) => {
-      console.error("Error deleting screening:", error);
-      toast.error("Error deleting screening");
+      console.error("Error deleting contest:", error);
+      toast.error("Error deleting contest");
     },
   });
 
   const handleDelete = () => {
-    deleteMutation.mutate(screening?._id as string);
+    deleteMutation.mutate(contest?._id as string);
   };
   return (
     <div>
@@ -46,10 +46,10 @@ const DeleteScreening = ({ screening }: { screening: IScreening }) => {
         isOpen={isModalOpen}
         setIsOpen={setIsModalOpen}
         onConfirm={handleDelete}
-        title="Delete Screening"
-        description={`Are you sure you want to delete screening "${screening.name}" ?`}
+        title="Delete Contest"
+        description={`Are you sure you want to delete contest "${contest.name}" ?`}
       />
     </div>
   );
 };
-export default DeleteScreening;
+export default DeleteContest;
