@@ -11,6 +11,8 @@ import AddNews from "./pages/news/AddNews";
 import UpdateNews from "./pages/news/UpdateNews";
 import ScreeningsPage from "./pages/screenings/ScreeningsPage";
 import ScreeningDetailsPage from "./pages/screenings/ScreeningDetailsPage";
+import ContestsPage from "./pages/contests/ContestsPage";
+import ContestDetailsPage from "./pages/contests/ContestDetailsPage";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +59,14 @@ const router = createBrowserRouter([
           {
             path: "screenings/:id",
             element: <ScreeningDetailsPage />,
+          },
+          {
+            path: "contests",
+            element: <ContestsPage />,
+          },
+          {
+            path: "contests/:id",
+            element: <ContestDetailsPage />,
           },
         ],
       },

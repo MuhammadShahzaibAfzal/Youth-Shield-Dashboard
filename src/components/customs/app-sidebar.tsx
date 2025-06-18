@@ -15,7 +15,7 @@ import {
   MdLogout,
   MdAssignment,
 } from "react-icons/md";
-import { FaNewspaper, FaRegUser } from "react-icons/fa";
+import { FaNewspaper, FaRegUser, FaTrophy } from "react-icons/fa";
 import { useTheme } from "./theme-provider";
 import useLogout from "@/hooks/useLogout";
 
@@ -29,6 +29,11 @@ const items = [
     title: "Health Screenings",
     url: "/dashboard/screenings",
     icon: MdAssignment,
+  },
+  {
+    title: "Contests Management",
+    url: "/dashboard/contests",
+    icon: FaTrophy,
   },
   {
     title: "News Management",

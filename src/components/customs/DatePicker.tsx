@@ -22,7 +22,7 @@ export function DatePicker({
   placeholder,
 }: DatePickerProps) {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Popover>
         <PopoverTrigger asChild>
           <Button
@@ -42,8 +42,7 @@ export function DatePicker({
             mode="single"
             selected={date ?? undefined}
             onSelect={onDateChange}
-            initialFocus
-            fromDate={fromDate}
+            disabled={fromDate ? { before: fromDate } : undefined}
           />
         </PopoverContent>
       </Popover>

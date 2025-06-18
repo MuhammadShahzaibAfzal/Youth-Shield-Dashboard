@@ -91,3 +91,33 @@ export interface IScreening {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IContestOption {
+  _id: string;
+  text: string;
+  score: number;
+}
+
+export interface IContestQuestion {
+  _id: string;
+  text: string;
+  type: "multiple" | "dropdown";
+  options: IOption[];
+  order: number;
+}
+
+export interface IContest {
+  _id: string;
+  name: string;
+  slug: string;
+  description?: string;
+  status: "active" | "inactive";
+  imageURL?: string;
+  questions: IContestQuestion[];
+  fromDate: Date;
+  fromTime: string;
+  toDate: Date;
+  toTime: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
