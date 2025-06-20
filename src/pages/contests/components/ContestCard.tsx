@@ -11,7 +11,7 @@ const ContestCard = ({ contest }: { contest: IContest }) => {
         <img
           src={contest.imageURL}
           alt={contest.name}
-          className="w-full h-[200px] overflow-hidden object-cover"
+          className="w-full h-[250px] overflow-hidden object-cover"
         />
         <div className="px-4 mt-4">
           <h2 className="text-lg font-semibold">{contest.name}</h2>

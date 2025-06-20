@@ -33,7 +33,7 @@ const ContestDetailsPage = () => {
         <img
           src={contest.imageURL}
           alt={contest.name}
-          className="w-[300px] h-[300px] object-cover"
+          className="h-[250px] object-cover"
         />
         <div className="px-4 py-4">
           <h2 className="text-xl font-semibold mb-2">{contest.name}</h2>

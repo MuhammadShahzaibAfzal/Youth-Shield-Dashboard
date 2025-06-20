@@ -187,6 +187,7 @@ const AddContest = () => {
                   imageURL: file,
                 }));
               }}
+              resolution="Recommended size: 1000 x 667px"
             />
           </div>
         </form>
