@@ -9,7 +9,7 @@ const ScreeningCard = ({ screening }: { screening: IScreening }) => {
         <img
           src={screening.imageURL}
           alt={screening.name}
-          className="w-full h-[200px] overflow-hidden object-cover"
+          className="w-full h-[250px] overflow-hidden object-cover"
         />
         <div className="px-4 mt-4">
           <h2 className="text-lg font-semibold">{screening.name}</h2>

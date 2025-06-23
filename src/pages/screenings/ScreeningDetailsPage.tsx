@@ -37,7 +37,7 @@ const ScreeningDetailsPage = () => {
         <img
           src={screening.imageURL}
           alt={screening.name}
-          className="w-[300px] h-[300px] object-cover"
+          className="w-[300px] h-[250px] object-cover"
         />
         <div className="px-4 py-4">
           <h2 className="text-xl font-semibold mb-2">{screening.name}</h2>
