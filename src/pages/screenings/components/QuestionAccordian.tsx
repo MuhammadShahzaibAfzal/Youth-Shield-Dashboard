@@ -212,6 +212,25 @@ const QuestionAccordian = ({
     );
   };
 
+  const handleScoreChange = (newScore: number, index: number) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((q) => {
+        if (q._id === question._id) {
+          return {
+            ...q,
+            heightOptions: q.heightOptions?.map((ho) => ({
+              ...ho,
+              weights: ho.weights.map((w, i) =>
+                i === index ? { ...w, score: newScore } : w
+              ),
+            })),
+          };
+        }
+        return q;
+      })
+    );
+  };
+
   const handleSave = () => {
     // VALIDATION. Not Options texts and question text is empty
     if (!question.text) {
@@ -334,7 +353,7 @@ const QuestionAccordian = ({
                     </div>
                     <button
                       onClick={() => removeOption(option._id as string)}
-                      className="w-10 flex justify-center items-center"
+                      className="w-16 flex justify-center items-center"
                     >
                       <FaTrash />
                     </button>
@@ -350,10 +369,60 @@ const QuestionAccordian = ({
                 <TableHeader>
                   <TableRow>
                     <TableHead>Height</TableHead>
-                    <TableHead>Weight (lbs) - 0 Point</TableHead>
-                    <TableHead>Weight (lbs) - 1 Point</TableHead>
-                    <TableHead>Weight (lbs) - 2 Point</TableHead>
-                    <TableHead>Weight (lbs) - 3 Point</TableHead>
+                    <TableHead>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          className="bg-white text-black text-center w-16"
+                          onChange={(e) => {
+                            handleScoreChange(Number(e.target.value), 0);
+                          }}
+                          defaultValue={0}
+                          value={question.heightOptions?.[0].weights[0].score}
+                          type="number"
+                        />
+
+                        <p>Weight (lbs)</p>
+                      </div>
+                    </TableHead>
+                    <TableHead>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          className="bg-white text-black w-16 text-center"
+                          onChange={(e) => {
+                            handleScoreChange(Number(e.target.value), 1);
+                          }}
+                          value={question.heightOptions?.[0].weights[1].score}
+                          type="number"
+                        />
+                        <p>Weight (lbs)</p>
+                      </div>
+                    </TableHead>
+                    <TableHead>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          className="bg-white text-black w-16 text-center"
+                          onChange={(e) => {
+                            handleScoreChange(Number(e.target.value), 2);
+                          }}
+                          value={question.heightOptions?.[0].weights[2].score}
+                          type="number"
+                        />
+                        <p>Weight (lbs)</p>
+                      </div>
+                    </TableHead>
+                    <TableHead>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          className="bg-white text-black w-16 text-center"
+                          type="number"
+                          onChange={(e) => {
+                            handleScoreChange(Number(e.target.value), 3);
+                          }}
+                          value={question.heightOptions?.[0].weights[3].score}
+                        />
+                        <p>Weight (lbs)</p>
+                      </div>
+                    </TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
                 </TableHeader>
