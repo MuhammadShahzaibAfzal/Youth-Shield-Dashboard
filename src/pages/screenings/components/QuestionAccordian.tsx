@@ -298,7 +298,7 @@ const QuestionAccordian = ({
                   <div className="flex mb-1 justify-between items-center">
                     <Label>Option {index + 1}</Label>
                   </div>
-                  <div className="flex  rounded-lg py-0 border shadow focus:ring-1 focus-visible:ring-1">
+                  <div className="flex items-center rounded-lg py-0 border shadow focus:ring-1 focus-visible:ring-1">
                     <Input
                       value={option.text}
                       className="flex-1 border-0 shadow-none focus:ring-0 focus-visible:ring-0"
@@ -306,29 +306,32 @@ const QuestionAccordian = ({
                         handleOptionChange(option._id as string, "text", e.target.value)
                       }
                     />
-                    <Input
-                      className="w-20 border-0 border-l rounded-none bg-gray-100 shadow-none focus:ring-0 focus-visible:ring-0"
-                      placeholder="Points"
-                      type="number"
-                      min="0"
-                      value={option.score}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        // Allow empty string or positive numbers
-                        if (value === "" || /^\d+$/.test(value)) {
-                          handleOptionChange(
-                            option._id as string,
-                            "score",
-                            value === "" ? "" : (Number(value) as any)
-                          );
-                        }
-                      }}
-                      onBlur={(e) => {
-                        if (e.target.value === "") {
-                          handleOptionChange(option._id as string, "score", 0 as any);
-                        }
-                      }}
-                    />
+                    <div className="flex items-center">
+                      <Input
+                        className="w-20 border-0 border-l rounded-none bg-gray-100 shadow-none focus:ring-0 focus-visible:ring-0"
+                        placeholder="Points"
+                        type="number"
+                        min="0"
+                        value={option.score}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          // Allow empty string or positive numbers
+                          if (value === "" || /^\d+$/.test(value)) {
+                            handleOptionChange(
+                              option._id as string,
+                              "score",
+                              value === "" ? "" : (Number(value) as any)
+                            );
+                          }
+                        }}
+                        onBlur={(e) => {
+                          if (e.target.value === "") {
+                            handleOptionChange(option._id as string, "score", 0 as any);
+                          }
+                        }}
+                      />
+                      <span className="px-2 text-sm text-gray-500">pts</span>
+                    </div>
                     <button
                       onClick={() => removeOption(option._id as string)}
                       className="w-10 flex justify-center items-center"

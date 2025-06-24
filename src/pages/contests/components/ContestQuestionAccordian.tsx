@@ -192,7 +192,7 @@ const ContestQuestionAccordian = ({
                   <div className="flex mb-1 justify-between items-center">
                     <Label>Option {index + 1}</Label>
                   </div>
-                  <div className="flex  rounded-lg py-0 border shadow focus:ring-1 focus-visible:ring-1">
+                  <div className="flex items-center rounded-lg py-0 border shadow focus:ring-1 focus-visible:ring-1">
                     <Input
                       value={option.text}
                       className="flex-1 border-0 shadow-none focus:ring-0 focus-visible:ring-0"
@@ -223,6 +223,7 @@ const ContestQuestionAccordian = ({
                         }
                       }}
                     />
+                    <span className="px-2 text-sm text-gray-500">pts</span>
                     <button
                       onClick={() => removeOption(option._id as string)}
                       className="w-10 flex justify-center items-center"
