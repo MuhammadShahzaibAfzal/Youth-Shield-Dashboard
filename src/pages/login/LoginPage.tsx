@@ -11,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { self, signin } from "@/http/auth";
-import { getErrorMessage, getExpiryTime } from "@/lib/utils";
+import { getErrorMessage } from "@/lib/utils";
 import { useAuthStore } from "@/store/authStore";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
@@ -21,7 +21,7 @@ import { toast } from "sonner";
 
 const LoginPage = () => {
   const { theme } = useTheme();
-  const { setUser, setToken, user } = useAuthStore();
+  const { setUser, setToken, user, setRefreshToken } = useAuthStore();
 
   const { refetch } = useQuery({
     queryKey: ["self"],
@@ -33,9 +33,8 @@ const LoginPage = () => {
     mutationFn: signin,
     onSuccess: async (responseData) => {
       setToken(responseData?.data?.accessToken);
+      setRefreshToken(responseData?.data?.refreshToken);
       const { data } = await refetch();
-      const expiryTime = getExpiryTime();
-      localStorage.setItem("youthshield-token-expiry", expiryTime.toString());
       setUser(data?.data?.user);
       return;
     },

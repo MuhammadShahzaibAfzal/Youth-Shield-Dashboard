@@ -1,6 +1,6 @@
-import { getExpiryTime } from "@/lib/utils";
-import { useAuthStore } from "@/store/authStore";
+"use client";
 
+import { useAuthStore } from "@/store/authStore";
 import axios from "axios";
 
 export const api = axios.create({
@@ -21,6 +21,7 @@ api.interceptors.request.use((config) => {
 });
 
 const refreshToken = async () => {
+  const refreshToken = useAuthStore.getState().refreshToken;
   try {
     const { data } = await axios.get(
       `${import.meta.env.VITE_BACKEND_API_URL}/auth/refresh`,
@@ -29,12 +30,15 @@ const refreshToken = async () => {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          Authorization: `Bearer ${refreshToken}`,
         },
       }
     );
-    const expiryTime = getExpiryTime();
-    localStorage.setItem("youthshield-token-expiry", expiryTime.toString());
+    console.log("Token refreshed", data);
+
+    useAuthStore.getState().setUser(data.user);
     useAuthStore.getState().setToken(data.accessToken);
+    useAuthStore.getState().setRefreshToken(data.refreshToken);
   } catch (error) {
     console.error("Token refresh error", error);
   }
