@@ -157,6 +157,16 @@ const AddEvent = () => {
               className="w-full"
             />
           </div>
+          {formData.type === "physical" && (
+            <div className="flex-1">
+              <Label>Location</Label>
+              <Input
+                value={formData.location}
+                onChange={(e) => handleChange("location", e.target.value)}
+                placeholder="Location"
+              />
+            </div>
+          )}
           <div className="flex-1">
             <Label>Status</Label>
             <CustomSelect
@@ -167,25 +177,6 @@ const AddEvent = () => {
               value={formData.status}
               setValue={(value) => handleChange("status", value as "draft" | "publish")}
               className="w-full"
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="flex-1">
-            <Label>Location</Label>
-            <Input
-              value={formData.location}
-              onChange={(e) => handleChange("location", e.target.value)}
-              placeholder="Physical address or virtual link"
-            />
-          </div>
-          <div className="flex-1">
-            <Label>Registration Link</Label>
-            <Input
-              value={formData.registrationLink}
-              onChange={(e) => handleChange("registrationLink", e.target.value)}
-              placeholder="https://example.com/register"
             />
           </div>
         </div>
