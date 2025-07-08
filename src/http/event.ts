@@ -62,3 +62,22 @@ export const uploadEventImage = async (file: File) => {
   });
   return data.url;
 };
+
+export const getEventRegistrations = async ({
+  id,
+  page,
+  limit,
+}: {
+  id: string;
+  page: number;
+  limit: number;
+}) => {
+  const { data } = await api.get(`/registrations/events/${id}`, {
+    params: {
+      page,
+      limit,
+      eventId: id,
+    },
+  });
+  return data;
+};

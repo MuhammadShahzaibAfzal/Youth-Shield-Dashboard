@@ -77,15 +77,9 @@ const EventsManagement = () => {
               <TableCell className="flex gap-2 items-center">
                 <div className="flex gap-2.5">
                   <Button variant="outline" size="icon" asChild>
-                    <a
-                      href={`${import.meta.env.VITE_WEBSITE_DOMAIN}/events/${
-                        event.SEO?.slug
-                      }`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <Link to={`/dashboard/events-management/registrations/${event._id}`}>
                       <FaEye />
-                    </a>
+                    </Link>
                   </Button>
                   <Button variant="outline" size="icon" asChild>
                     <Link to={`/dashboard/events-management/update/${event._id}`}>

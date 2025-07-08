@@ -144,3 +144,12 @@ export interface IEvent {
   updatedAt: Date;
   SEO: IEventSEO;
 }
+
+export interface IRegistration {
+  registrationNumber: string;
+  event: IEvent;
+  user: IUser;
+  status: "pending" | "confirmed" | "cancelled";
+  createdAt: Date;
+  updatedAt: Date;
+}

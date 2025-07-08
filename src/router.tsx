@@ -16,6 +16,7 @@ import ContestDetailsPage from "./pages/contests/ContestDetailsPage";
 import EventsManagement from "./pages/events/EventsManagement";
 import AddEvent from "./pages/events/AddEvent";
 import UpdateEvent from "./pages/events/UpdateEvent";
+import EventRegistrations from "./pages/events/EventRegistrations";
 
 const router = createBrowserRouter([
   {
@@ -57,6 +58,11 @@ const router = createBrowserRouter([
           {
             path: "events-management/update/:id",
             element: <UpdateEvent />,
+          },
+
+          {
+            path: "events-management/registrations/:id",
+            element: <EventRegistrations />,
           },
 
           {

@@ -97,6 +97,11 @@ const HomePage = () => {
               </TableCell>
               <TableCell className="flex gap-2 items-center">
                 <div className="flex gap-2.5">
+                  <Button size="icon" variant={"outline"} asChild>
+                    <Link to={`/dashboard/events-management/registrations/${i._id}`}>
+                      <FaEye />
+                    </Link>
+                  </Button>
                   <Button variant={"outline"} size="icon" asChild>
                     <Link to={`/dashboard/events-management/update/${i._id}`}>
                       <FaEdit />
