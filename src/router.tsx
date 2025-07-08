@@ -13,6 +13,9 @@ import ScreeningsPage from "./pages/screenings/ScreeningsPage";
 import ScreeningDetailsPage from "./pages/screenings/ScreeningDetailsPage";
 import ContestsPage from "./pages/contests/ContestsPage";
 import ContestDetailsPage from "./pages/contests/ContestDetailsPage";
+import EventsManagement from "./pages/events/EventsManagement";
+import AddEvent from "./pages/events/AddEvent";
+import UpdateEvent from "./pages/events/UpdateEvent";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +45,18 @@ const router = createBrowserRouter([
           {
             path: "news-management/update/:id",
             element: <UpdateNews />,
+          },
+          {
+            path: "events-management",
+            element: <EventsManagement />,
+          },
+          {
+            path: "events-management/add",
+            element: <AddEvent />,
+          },
+          {
+            path: "events-management/update/:id",
+            element: <UpdateEvent />,
           },
 
           {

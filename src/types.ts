@@ -121,3 +121,26 @@ export interface IContest {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IEventSEO {
+  metaTitle: string;
+  slug: string;
+  metaDescription: string;
+}
+
+export interface IEvent {
+  _id: string;
+  title: string;
+  summary: string;
+  content?: string;
+  image: string;
+  type: "virtual" | "physical";
+  location?: string;
+  isFeatured: boolean;
+  eventDate: Date;
+  status: "publish" | "draft";
+  registrationLink?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  SEO: IEventSEO;
+}

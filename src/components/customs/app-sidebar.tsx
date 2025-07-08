@@ -15,7 +15,7 @@ import {
   MdLogout,
   MdAssignment,
 } from "react-icons/md";
-import { FaNewspaper, FaRegUser, FaTrophy } from "react-icons/fa";
+import { FaCalendarCheck, FaNewspaper, FaRegUser, FaTrophy } from "react-icons/fa";
 import { useTheme } from "./theme-provider";
 import useLogout from "@/hooks/useLogout";
 
@@ -44,6 +44,11 @@ const items = [
     title: "News Category Management",
     url: "/dashboard/category-management",
     icon: MdOutlineCategory,
+  },
+  {
+    title: "Events Management",
+    url: "/dashboard/events-management",
+    icon: FaCalendarCheck,
   },
 
   {
