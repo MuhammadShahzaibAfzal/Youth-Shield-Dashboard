@@ -45,21 +45,15 @@ const ScreeningDetailsPage = () => {
           <h2 className="text-xl font-semibold mb-2">{screening.name}</h2>
           <div className="space-y-2 mb-5">
             <div>
-              <p className="font-semibold mb-1 text-sm uppercase underline text-accent">
-                Overview
-              </p>
+              <p className="font-semibold mb-1 text-sm   text-accent">Overview</p>
               <p className="text-muted-foreground ml-2">{screening.overview}</p>
             </div>
             <div>
-              <p className="font-semibold mb-1 text-sm uppercase underline text-accent">
-                Purpose
-              </p>
+              <p className="font-semibold mb-1 text-sm   text-accent">Purpose</p>
               <p className="text-muted-foreground ml-2">{screening.purpose}</p>
             </div>
             <div>
-              <p className="font-semibold mb-1 text-sm uppercase underline text-accent">
-                Benefits
-              </p>
+              <p className="font-semibold mb-1 text-sm   text-accent">Benefits</p>
               <ul className="ml-2">
                 {screening?.benefits?.map((benefit, index) => (
                   <li
