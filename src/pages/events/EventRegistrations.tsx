@@ -53,17 +53,18 @@ const EventRegistrations = () => {
               </TableCell>
               <TableCell>{registration?.user?.email}</TableCell>
               <TableCell>
-                {registration?.user?.countryCode ? (
-                  <img
-                    src={`https://flagcdn.com/${registration?.user?.countryCode?.toLowerCase()}.svg`}
-                    alt=""
-                    width={24}
-                    height={24}
-                    className="border rounded"
-                  />
-                ) : (
-                  <div className="">-</div>
-                )}
+                <div className="flex gap-2 items-center">
+                  <span>{registration?.user?.country}</span>
+                  {registration?.user?.countryCode && (
+                    <img
+                      src={`https://flagcdn.com/${registration?.user?.countryCode?.toLowerCase()}.svg`}
+                      alt=""
+                      width={24}
+                      height={24}
+                      className="border rounded"
+                    />
+                  )}
+                </div>
               </TableCell>
               <TableCell>{registration?.user?.highSchool}</TableCell>
               <TableCell>
