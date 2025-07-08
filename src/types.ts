@@ -4,6 +4,9 @@ export interface IUser {
   email: string;
   password: string;
   imageURL?: string;
+  highSchool?: string;
+  country?: string;
+  countryCode?: string;
 }
 
 export interface ICategory {

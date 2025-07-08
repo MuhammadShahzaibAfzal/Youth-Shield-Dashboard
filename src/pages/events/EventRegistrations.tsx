@@ -39,6 +39,8 @@ const EventRegistrations = () => {
             <TableHead>#</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Email</TableHead>
+            <TableHead>Country</TableHead>
+            <TableHead>School</TableHead>
             <TableHead>Date</TableHead>
           </TableRow>
         </TableHeader>
@@ -50,6 +52,20 @@ const EventRegistrations = () => {
                 {registration?.user?.firstName} {registration?.user?.lastName}
               </TableCell>
               <TableCell>{registration?.user?.email}</TableCell>
+              <TableCell>
+                {registration?.user?.countryCode ? (
+                  <img
+                    src={`https://flagcdn.com/${registration?.user?.countryCode?.toLowerCase()}.svg`}
+                    alt=""
+                    width={24}
+                    height={24}
+                    className="border rounded"
+                  />
+                ) : (
+                  <div className="">-</div>
+                )}
+              </TableCell>
+              <TableCell>{registration?.user?.highSchool}</TableCell>
               <TableCell>
                 {format(new Date(registration.createdAt), "dd MMM yyyy, hh:mm aa")}
               </TableCell>
