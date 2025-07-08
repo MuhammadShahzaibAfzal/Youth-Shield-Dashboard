@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import ImagePreview from "@/components/customs/image-preview";
-import { Model } from "@/components/customs/Model";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { updateScreening } from "@/http/screening";
+import { getScreening, updateScreening } from "@/http/screening";
 import type { IScreening } from "@/types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 import slugify from "slugify";
 import { toast } from "sonner";
 
@@ -19,25 +19,39 @@ interface IFormData {
   description?: string;
   status: "active" | "inactive" | "draft";
   imageURL?: string | null | File;
+  overview?: string;
+  purpose?: string;
+  duration?: string;
+  benefits?: string[];
 }
 
-const UpdateScreening = ({ screening }: { screening: IScreening }) => {
-  const queryClient = useQueryClient();
-  const [isOpenModel, setIsOpenModel] = useState(false);
-  const [formData, setFormData] = useState<IFormData>({
-    name: screening.name,
-    slug: screening.slug,
-    description: screening.description || "",
-    imageURL: screening.imageURL || null,
-    status: screening.status,
+const UpdateScreening = () => {
+  const { id } = useParams<{ id: string }>();
+  const { data: screening, isLoading } = useQuery<IScreening | null>({
+    queryKey: ["screenings", id],
+    queryFn: () => getScreening(id!),
+    enabled: !!id,
   });
+
+  const queryClient = useQueryClient();
+  const [formData, setFormData] = useState<IFormData>({
+    name: "",
+    slug: "",
+    description: "",
+    imageURL: null,
+    status: "active",
+    overview: "",
+    purpose: "",
+    duration: "",
+    benefits: [],
+  });
+  const [newBenefit, setNewBenefit] = useState("");
 
   const mutation = useMutation({
     mutationFn: async (data: FormData) => {
-      return await updateScreening(screening._id as string, data);
+      return await updateScreening(id!, data);
     },
     onSuccess: () => {
-      setIsOpenModel(false);
       toast.success("Screening updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["screenings"] });
     },
@@ -54,6 +68,30 @@ const UpdateScreening = ({ screening }: { screening: IScreening }) => {
     }));
   };
 
+  const handleStatusChange = (status: "active" | "inactive" | "draft") => {
+    setFormData((prevData) => ({
+      ...prevData,
+      status,
+    }));
+  };
+
+  const handleAddBenefit = () => {
+    if (newBenefit.trim()) {
+      setFormData((prevData) => ({
+        ...prevData,
+        benefits: [...(prevData.benefits || []), newBenefit.trim()],
+      }));
+      setNewBenefit("");
+    }
+  };
+
+  const handleRemoveBenefit = (index: number) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      benefits: prevData.benefits?.filter((_, i) => i !== index),
+    }));
+  };
+
   const handleUpdate = () => {
     if (!formData.name) return toast.error("Name is required");
 
@@ -62,6 +100,14 @@ const UpdateScreening = ({ screening }: { screening: IScreening }) => {
     payload.append("slug", formData.slug);
     payload.append("description", formData.description || "");
     payload.append("status", formData.status);
+    payload.append("overview", formData.overview || "");
+    payload.append("purpose", formData.purpose || "");
+    payload.append("duration", formData.duration || "");
+
+    if (formData.benefits && formData.benefits.length > 0) {
+      payload.append("benefits", JSON.stringify(formData.benefits));
+    }
+
     if (formData.imageURL && formData.imageURL instanceof File) {
       payload.append("image", formData.imageURL);
     } else if (formData.imageURL === null) {
@@ -72,7 +118,7 @@ const UpdateScreening = ({ screening }: { screening: IScreening }) => {
   };
 
   useEffect(() => {
-    if (formData.name && isOpenModel) {
+    if (formData.name) {
       const slug = slugify(formData.name, {
         lower: true,
         strict: true,
@@ -84,58 +130,94 @@ const UpdateScreening = ({ screening }: { screening: IScreening }) => {
         slug,
       }));
     }
-  }, [formData.name, isOpenModel]);
+  }, [formData.name]);
 
   useEffect(() => {
-    if (isOpenModel) {
+    if (screening) {
       setFormData({
         name: screening.name,
         slug: screening.slug,
         description: screening.description || "",
         imageURL: screening.imageURL || null,
         status: screening.status,
+        overview: screening.overview || "",
+        purpose: screening.purpose || "",
+        duration: screening.duration || "",
+        benefits: screening.benefits || [],
       });
     }
-  }, [isOpenModel, screening]);
+  }, [screening]);
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!screening) return <div>Screening not found</div>;
 
   return (
-    <div>
-      <Button variant="outline" size="icon" onClick={() => setIsOpenModel(true)}>
-        <FaEdit />
-      </Button>
+    <div className="mx-auto">
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-4">
+            <div>
+              <Label>Name *</Label>
+              <Input
+                onChange={(e) => handleChange("name", e.target.value)}
+                value={formData.name}
+                placeholder="Enter screening name"
+              />
+            </div>
 
-      <Model
-        isOpen={isOpenModel}
-        setIsOpen={setIsOpenModel}
-        title="Update Health Screening"
-        description=""
-        buttonText="Update Screening"
-        className="min-w-[550px]"
-        onClick={handleUpdate}
-        isLoading={mutation.isPending}
-      >
-        <form className="space-y-4">
-          <div>
-            <Label>Name</Label>
-            <Input
-              onChange={(e) => handleChange("name", e.target.value)}
-              value={formData.name}
-            />
+            <div>
+              <Label>Slug</Label>
+              <Input
+                value={formData.slug}
+                readOnly
+                placeholder="Auto-generated slug"
+                className="bg-gray-100"
+              />
+            </div>
+
+            <div>
+              <Label>Status</Label>
+              <div className="flex gap-4 mt-2">
+                <Button
+                  type="button"
+                  variant={formData.status === "active" ? "default" : "outline"}
+                  onClick={() => handleStatusChange("active")}
+                >
+                  Active
+                </Button>
+                <Button
+                  type="button"
+                  variant={formData.status === "inactive" ? "default" : "outline"}
+                  onClick={() => handleStatusChange("inactive")}
+                >
+                  Inactive
+                </Button>
+                <Button
+                  type="button"
+                  variant={formData.status === "draft" ? "default" : "outline"}
+                  onClick={() => handleStatusChange("draft")}
+                >
+                  Draft
+                </Button>
+              </div>
+            </div>
+
+            <div>
+              <Label>Duration</Label>
+              <Input
+                onChange={(e) => handleChange("duration", e.target.value)}
+                value={formData.duration}
+                placeholder="e.g., 30 minutes"
+              />
+            </div>
           </div>
 
-          <div>
-            <Label>Description</Label>
-            <Textarea
-              onChange={(e) => handleChange("description", e.target.value)}
-              value={formData.description}
-            />
-          </div>
           <div className="w-full flex flex-col">
             <ImagePreview
               id="update-screening-image"
               image={formData.imageURL || ""}
-              classNames="w-full flex-1"
-              containerClassNames="w-full flex-1"
+              classNames="w-full h-[250px] flex-1"
+              containerClassNames="w-full  flex-1"
               label="Image"
               onEdit={(file) => {
                 setFormData((prevData) => ({
@@ -151,8 +233,82 @@ const UpdateScreening = ({ screening }: { screening: IScreening }) => {
               }}
             />
           </div>
-        </form>
-      </Model>
+        </div>
+
+        {/* <div>
+          <Label>Description</Label>
+          <Textarea
+            onChange={(e) => handleChange("description", e.target.value)}
+            value={formData.description}
+            placeholder="Enter a brief description"
+            rows={3}
+          />
+        </div> */}
+
+        <div>
+          <Label>Overview</Label>
+          <Textarea
+            onChange={(e) => handleChange("overview", e.target.value)}
+            value={formData.overview}
+            placeholder="Enter detailed overview"
+            rows={4}
+          />
+        </div>
+
+        <div>
+          <Label>Purpose</Label>
+          <Textarea
+            onChange={(e) => handleChange("purpose", e.target.value)}
+            value={formData.purpose}
+            placeholder="Explain the purpose of this screening"
+            rows={3}
+          />
+        </div>
+
+        <div>
+          <Label>Benefits</Label>
+          <div className="space-y-2">
+            <div className="flex gap-2">
+              <Input
+                value={newBenefit}
+                onChange={(e) => setNewBenefit(e.target.value)}
+                placeholder="Add a benefit"
+                className="flex-1"
+                onKeyDown={(e) => e.key === "Enter" && handleAddBenefit()}
+              />
+              <Button type="button" variant="outline" onClick={handleAddBenefit}>
+                Add
+              </Button>
+            </div>
+
+            {formData.benefits && formData.benefits.length > 0 && (
+              <div className="grid grid-cols-2 mt-4 gap-4">
+                {formData.benefits.map((benefit, index) => (
+                  <div
+                    key={index}
+                    className="flex border p-2 rounded-md items-center gap-2"
+                  >
+                    <span className="flex-1 p-2 text-sm rounded">{benefit}</span>
+                    <Button
+                      type="button"
+                      size="icon"
+                      onClick={() => handleRemoveBenefit(index)}
+                    >
+                      <FaTrash />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex justify-end pt-4">
+          <Button onClick={handleUpdate} disabled={mutation.isPending}>
+            {mutation.isPending ? "Updating..." : "Update Screening"}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };

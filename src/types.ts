@@ -87,6 +87,10 @@ export interface IScreening {
   name: string;
   slug: string;
   description?: string;
+  overview?: string;
+  purpose?: string;
+  duration?: string;
+  benefits?: string[];
   status: "active" | "inactive" | "draft";
   imageURL?: string;
   questions: IQuestion[];

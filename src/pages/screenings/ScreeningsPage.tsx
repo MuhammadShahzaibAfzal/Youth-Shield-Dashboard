@@ -1,8 +1,10 @@
 import { getScreenings } from "@/http/screening";
 import type { IScreening } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import AddScreening from "./components/AddScreening";
 import ScreeningCard from "./components/ScreeningCard";
+import { Button } from "@/components/ui/button";
+import { FaPlus } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const ScreeningsPage = () => {
   const { data, isLoading } = useQuery<{
@@ -25,7 +27,12 @@ const ScreeningsPage = () => {
           <h1 className="text-xl font-medium">Health Screenings</h1>
           <p>Manage your health screenings</p>
         </div>
-        <AddScreening />
+        <Button asChild>
+          <Link to={`/dashboard/screenings/add`}>
+            <FaPlus />
+            Add Health Screening
+          </Link>
+        </Button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {data?.screenings?.map((screening) => {

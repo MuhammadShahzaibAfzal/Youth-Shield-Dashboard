@@ -17,6 +17,8 @@ import EventsManagement from "./pages/events/EventsManagement";
 import AddEvent from "./pages/events/AddEvent";
 import UpdateEvent from "./pages/events/UpdateEvent";
 import EventRegistrations from "./pages/events/EventRegistrations";
+import AddScreening from "./pages/screenings/components/AddScreening";
+import UpdateScreening from "./pages/screenings/components/UpdateScreening";
 
 const router = createBrowserRouter([
   {
@@ -78,9 +80,19 @@ const router = createBrowserRouter([
             element: <ScreeningsPage />,
           },
           {
+            path: "screenings/add",
+            element: <AddScreening />,
+          },
+          // /dashboard/screenings/${screening._id}/edit
+          {
+            path: "screenings/:id/edit",
+            element: <UpdateScreening />,
+          },
+          {
             path: "screenings/:id",
             element: <ScreeningDetailsPage />,
           },
+
           {
             path: "contests",
             element: <ContestsPage />,
