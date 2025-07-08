@@ -10,6 +10,7 @@ import QuestionsTab from "./tabs/QuestionsTab";
 import InterpretationsTab from "./tabs/InterpretationsTab";
 import { Button } from "@/components/ui/button";
 import { FaEdit } from "react-icons/fa";
+import { Check } from "lucide-react";
 
 const ScreeningDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -44,25 +45,29 @@ const ScreeningDetailsPage = () => {
           <h2 className="text-xl font-semibold mb-2">{screening.name}</h2>
           <div className="space-y-2 mb-5">
             <div>
-              <p className="font-semibold text-sm uppercase underline text-accent">
+              <p className="font-semibold mb-1 text-sm uppercase underline text-accent">
                 Overview
               </p>
-              <p className="text-muted-foreground">{screening.overview}</p>
+              <p className="text-muted-foreground ml-2">{screening.overview}</p>
             </div>
             <div>
-              <p className="font-semibold text-sm uppercase underline text-accent">
+              <p className="font-semibold mb-1 text-sm uppercase underline text-accent">
                 Purpose
               </p>
-              <p className="text-muted-foreground">{screening.purpose}</p>
+              <p className="text-muted-foreground ml-2">{screening.purpose}</p>
             </div>
             <div>
-              <p className="font-semibold text-sm uppercase underline text-accent">
+              <p className="font-semibold mb-1 text-sm uppercase underline text-accent">
                 Benefits
               </p>
-              <ul className="list-disc list-inside">
+              <ul className="ml-2">
                 {screening?.benefits?.map((benefit, index) => (
-                  <li key={index} className="text-muted-foreground">
-                    {benefit}
+                  <li
+                    key={index}
+                    className="text-muted-foreground flex gap-2 items-center"
+                  >
+                    <Check className="mr-2 h-4 w-4 text-primary" />
+                    <span>{benefit}</span>
                   </li>
                 ))}
               </ul>
