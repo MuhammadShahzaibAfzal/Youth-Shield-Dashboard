@@ -4,7 +4,10 @@ export interface IUser {
   email: string;
   password: string;
   imageURL?: string;
-  highSchool?: string;
+  highSchool?: {
+    name: string;
+    _id: string;
+  };
   country?: string;
   countryCode?: string;
 }

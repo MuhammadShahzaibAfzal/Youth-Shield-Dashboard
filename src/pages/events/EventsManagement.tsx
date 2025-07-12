@@ -10,7 +10,7 @@ import {
 import { getEvents } from "@/http/event";
 import type { IEvent } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-import { FaEdit, FaEye, FaPlus } from "react-icons/fa";
+import { FaEdit, FaPlus, FaUsers } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import DeleteEvent from "./components/DeleteEvent";
 import { format } from "date-fns";
@@ -78,7 +78,7 @@ const EventsManagement = () => {
                 <div className="flex gap-2.5">
                   <Button variant="outline" size="icon" asChild>
                     <Link to={`/dashboard/events-management/registrations/${event._id}`}>
-                      <FaEye />
+                      <FaUsers />
                     </Link>
                   </Button>
                   <Button variant="outline" size="icon" asChild>

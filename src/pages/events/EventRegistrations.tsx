@@ -66,7 +66,7 @@ const EventRegistrations = () => {
                   )}
                 </div>
               </TableCell>
-              <TableCell>{registration?.user?.highSchool}</TableCell>
+              <TableCell>{registration?.user?.highSchool?.name}</TableCell>
               <TableCell>
                 {format(new Date(registration.createdAt), "dd MMM yyyy, hh:mm aa")}
               </TableCell>
