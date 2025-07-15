@@ -26,6 +26,7 @@ interface FormState {
   summary: string;
   content: string;
   image: string | File | null;
+  cardImage: string | File | null;
   type: "virtual" | "physical";
   location: string;
   isFeatured: boolean;
@@ -43,6 +44,7 @@ const AddEvent = () => {
     summary: "",
     content: "",
     image: "",
+    cardImage: "",
     type: "physical",
     location: "",
     isFeatured: false,
@@ -98,6 +100,10 @@ const AddEvent = () => {
 
     if (formData.image && formData.image !== null) {
       data.append("image", formData.image);
+    }
+
+    if (formData.cardImage && formData.cardImage !== null) {
+      data.append("cardImage", formData.cardImage);
     }
 
     mutation.mutate(data);
@@ -198,14 +204,25 @@ const AddEvent = () => {
           />
         </div>
 
-        <div>
-          <ImagePreview
-            id="event-image"
-            label="Cover Image"
-            image={formData.image}
-            onEdit={(file) => handleChange("image", file)}
-            resolution="Recommended: 1000x667px"
-          />
+        <div className="flex gap-6">
+          <div className="flex flex-col gap-4">
+            <ImagePreview
+              id="event-card-image"
+              label="Card Image/Thumbnail"
+              image={formData.cardImage}
+              onEdit={(file) => handleChange("cardImage", file)}
+              resolution="Recommended: 1000x667 px"
+            />
+          </div>
+          <div className="flex flex-col gap-4">
+            <ImagePreview
+              id="event-image"
+              label="Cover Image"
+              image={formData.image}
+              onEdit={(file) => handleChange("image", file)}
+              resolution="Recommended size: 1200×853 px"
+            />
+          </div>
         </div>
 
         <div>

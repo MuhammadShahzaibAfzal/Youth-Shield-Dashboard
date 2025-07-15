@@ -27,6 +27,7 @@ interface FormState {
   summary: string;
   content: string;
   image: string | File | null;
+  cardImage: string | File | null;
   type: "virtual" | "physical";
   location: string;
   isFeatured: boolean;
@@ -45,6 +46,7 @@ const UpdateEvent = () => {
     summary: "",
     content: "",
     image: "",
+    cardImage: "",
     type: "physical",
     location: "",
     isFeatured: false,
@@ -74,6 +76,7 @@ const UpdateEvent = () => {
         summary: eventData.summary,
         content: eventData.content || "",
         image: eventData.image,
+        cardImage: eventData.cardImage,
         type: eventData.type,
         location: eventData.location || "",
         isFeatured: eventData.isFeatured,
@@ -85,7 +88,7 @@ const UpdateEvent = () => {
         slug: eventData.SEO?.slug || "",
       });
     }
-  }, [eventData]);
+  }, [eventData, id]);
 
   const mutation = useMutation({
     mutationFn: (data: FormData) => updateEvent(id!, data),
@@ -133,6 +136,12 @@ const UpdateEvent = () => {
       data.append("removeImage", "true");
     }
 
+    if (formData.cardImage && formData.cardImage instanceof File) {
+      data.append("cardImage", formData.cardImage);
+    } else if (formData.cardImage === null) {
+      // Handle case where image was removed
+      data.append("removeCardImage", "true");
+    }
     mutation.mutate(data);
   };
 
@@ -215,7 +224,7 @@ const UpdateEvent = () => {
             </div>
           )}
           <div className="flex-1">
-            <Label>Status</Label>
+            <Label>Status ({formData.status})</Label>
             <CustomSelect
               options={[
                 { label: "Draft", value: "draft" },
@@ -245,15 +254,27 @@ const UpdateEvent = () => {
           />
         </div>
 
-        <div>
-          <ImagePreview
-            id="event-image"
-            label="Cover Image"
-            image={formData.image}
-            onEdit={(file) => handleChange("image", file)}
-            onRemove={() => handleChange("image", null)}
-            resolution="Recommended: 1000x667px"
-          />
+        <div className="flex gap-6">
+          <div className="flex flex-col gap-4">
+            <ImagePreview
+              id="event-card-image"
+              label="Card Image/Thumbnail"
+              image={formData.cardImage}
+              onEdit={(file) => handleChange("cardImage", file)}
+              onRemove={() => handleChange("cardImage", null)}
+              resolution="Recommended: 1000x667 px"
+            />
+          </div>
+          <div className="flex flex-col gap-4">
+            <ImagePreview
+              id="event-image"
+              label="Cover Image"
+              image={formData.image}
+              onEdit={(file) => handleChange("image", file)}
+              onRemove={() => handleChange("image", null)}
+              resolution="Recommended size: 1200×853 px"
+            />
+          </div>
         </div>
 
         <div>

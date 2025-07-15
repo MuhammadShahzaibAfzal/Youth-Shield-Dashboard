@@ -144,6 +144,7 @@ export interface IEvent {
   summary: string;
   content?: string;
   image: string;
+  cardImage: string;
   type: "virtual" | "physical";
   location?: string;
   isFeatured: boolean;
