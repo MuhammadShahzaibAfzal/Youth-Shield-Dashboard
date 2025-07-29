@@ -11,7 +11,10 @@ import {
 } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
 import { getResources } from "@/http/resources";
-import { formatTimestamp } from "@/lib/utils";
+import DeleteResource from "./DeleteResource";
+import UpdateResource from "./UpdateResource";
+import { Button } from "@/components/ui/button";
+import { FaDownload, FaGlobe } from "react-icons/fa";
 
 const Resources = () => {
   const { data } = useQuery<{
@@ -41,7 +44,6 @@ const Resources = () => {
           <TableRow className="bg-secondary-foreground hover:bg-secondary-foreground/90">
             <TableHead>#</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Description</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
@@ -53,11 +55,27 @@ const Resources = () => {
                 <TableCell>{index + 1}</TableCell>
                 <TableCell>{item.name}</TableCell>
                 <TableCell>{item.categoryId?.name}</TableCell>
-                <TableCell>{formatTimestamp(item.createdAt)}</TableCell>
                 <TableCell>
                   <div className="flex gap-4">
-                    {/* <UpdateResourceCategory category={category} />
-                    <DeleteResourceCategory category={category} /> */}
+                    {/* button to download pdf if have. also for visit website if have */}
+                    {item?.url && (
+                      <Button size="icon" variant="outline" asChild>
+                        <a href={item.url} target="_blank">
+                          <FaGlobe />
+                        </a>
+                      </Button>
+                    )}
+
+                    {item?.pdfUrl && (
+                      <Button size="icon" variant="outline" asChild>
+                        <a href={item.pdfUrl} target="_blank">
+                          <FaDownload />
+                        </a>
+                      </Button>
+                    )}
+
+                    <UpdateResource resource={item} />
+                    <DeleteResource resource={item} />
                   </div>
                 </TableCell>
               </TableRow>
