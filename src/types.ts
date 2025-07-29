@@ -175,7 +175,7 @@ export interface IResourceCategory {
 
 export interface IResource extends Document {
   _id: string;
-  categoryId: string | IResourceCategory;
+  categoryId: IResourceCategory;
   name: string;
   shortDescription: string;
   url: string;

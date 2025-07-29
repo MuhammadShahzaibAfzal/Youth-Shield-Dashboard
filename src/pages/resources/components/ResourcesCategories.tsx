@@ -19,8 +19,9 @@ const ResourcesCategories = () => {
   const { data } = useQuery<IResourceCategory[]>({
     queryKey: ["resouces-categories"],
     queryFn: () => getCategories(),
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 10, // 1 minute
   });
-  console.log("DATA : ", data);
   return (
     <div>
       <div className="flex items-center mb-4 mt-6 justify-between gap-4">
