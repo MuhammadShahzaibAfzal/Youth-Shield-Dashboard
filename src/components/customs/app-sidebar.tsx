@@ -50,6 +50,11 @@ const items = [
     url: "/dashboard/events-management",
     icon: FaCalendarCheck,
   },
+  {
+    title: "Resources Management",
+    url: "/dashboard/resources-management",
+    icon: MdAssignment,
+  },
 
   {
     title: "Profile",

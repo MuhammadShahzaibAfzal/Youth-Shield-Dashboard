@@ -164,3 +164,22 @@ export interface IRegistration {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IResourceCategory {
+  _id: string;
+  name: string;
+  description?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IResource extends Document {
+  _id: string;
+  categoryId: string | IResourceCategory;
+  name: string;
+  shortDescription: string;
+  url: string;
+  pdfUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}

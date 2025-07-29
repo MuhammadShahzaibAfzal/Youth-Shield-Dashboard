@@ -19,6 +19,7 @@ import UpdateEvent from "./pages/events/UpdateEvent";
 import EventRegistrations from "./pages/events/EventRegistrations";
 import AddScreening from "./pages/screenings/components/AddScreening";
 import UpdateScreening from "./pages/screenings/components/UpdateScreening";
+import ResourcesMangement from "./pages/resources/ResourcesMangement";
 
 const router = createBrowserRouter([
   {
@@ -100,6 +101,10 @@ const router = createBrowserRouter([
           {
             path: "contests/:id",
             element: <ContestDetailsPage />,
+          },
+          {
+            path: "resources-management",
+            element: <ResourcesMangement />,
           },
         ],
       },
