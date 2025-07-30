@@ -2,7 +2,7 @@ import { api } from "./client";
 
 // ------------------- CATEGORY APIs -------------------
 
-export const addCategory = async (data: { name: string; description?: string }) => {
+export const addCategory = async (data: { name: string; description?: string,icon?:string }) => {
   const { data: res } = await api.post(`/resources/categories`, data);
   return res;
 };
@@ -21,14 +21,17 @@ export const updateCategory = async ({
   _id,
   name,
   description,
+  icon
 }: {
   _id: string;
   name: string;
   description?: string;
+  icon?:string
 }) => {
   const { data: updated } = await api.put(`/resources/categories/${_id}`, {
     name,
     description,
+    icon
   });
   return updated;
 };

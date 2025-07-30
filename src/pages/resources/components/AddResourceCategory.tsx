@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import IconSelector from "@/components/customs/IconSelector";
 import { Model } from "@/components/customs/Model";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,8 @@ const AddResourceCategory = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
+  const [icon, setIcon] = useState("Education");
+  const [description, setDescription] = useState("");
 
   const addMutation = useMutation({
     mutationFn: addCategory,
@@ -22,6 +25,8 @@ const AddResourceCategory = () => {
       });
 
       setName("");
+      setDescription("");
+      setIcon("Education");
       setIsModalOpen(false);
     },
     onError: (error: any) => {
@@ -31,7 +36,7 @@ const AddResourceCategory = () => {
   });
 
   const handleSave = () => {
-    addMutation.mutate({ name });
+    addMutation.mutate({ name, description, icon });
   };
   return (
     <div>
@@ -54,6 +59,20 @@ const AddResourceCategory = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSave()}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="name">Category Icon</Label>
+            <IconSelector selectedIcon={icon} setSelectedIcon={setIcon} />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="name">Description</Label>
+            <Input
+              placeholder="Category Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
         </div>
