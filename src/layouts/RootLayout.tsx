@@ -22,11 +22,15 @@ const RootLayout = () => {
   useEffect(() => {
     if (data) {
       const user = data.data.user as IUser;
-      setUser(user);
-      if (location.pathname === "/") {
-        navigate("/dashboard", { replace: true });
+      if (user?.role === "admin") {
+        setUser(user);
+        if (location.pathname === "/") {
+          navigate("/dashboard", { replace: true });
+        } else {
+          navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+        }
       } else {
-        navigate(`${location.pathname}?${params.toString()}`, { replace: true });
+        navigate("/", { replace: true });
       }
     }
   }, [data]);

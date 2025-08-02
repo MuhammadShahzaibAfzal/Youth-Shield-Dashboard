@@ -10,6 +10,7 @@ export interface IUser {
   };
   country?: string;
   countryCode?: string;
+  role: "admin" | "user";
 }
 
 export interface ICategory {
