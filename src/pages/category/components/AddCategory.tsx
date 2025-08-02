@@ -45,6 +45,7 @@ const AddCategory = () => {
         setIsOpen={setIsModalOpen}
         onClick={handleSave}
         buttonText="Save Category"
+        isLoading={addMutation.isPending}
       >
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-2">
