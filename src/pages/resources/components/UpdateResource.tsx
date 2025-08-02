@@ -4,6 +4,10 @@ import { Model } from "@/components/customs/Model";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  getIndependentCategories,
+  updateIndependentResource,
+} from "@/http/indepResources";
 import { getCategories, updateResource } from "@/http/resources";
 import type { IResource, IResourceCategory } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,7 +15,13 @@ import { useEffect, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { toast } from "sonner";
 
-const UpdateResource = ({ resource }: { resource: IResource }) => {
+const UpdateResource = ({
+  resource,
+  isIndependentResource,
+}: {
+  resource: IResource;
+  isIndependentResource: boolean;
+}) => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -22,17 +32,24 @@ const UpdateResource = ({ resource }: { resource: IResource }) => {
   const [categoryId, setCategoryId] = useState("");
 
   const { data: categories } = useQuery<IResourceCategory[]>({
-    queryKey: ["resources-categories"],
-    queryFn: () => getCategories(),
+    queryKey: [
+      isIndependentResource ? "independent-resources-categories" : "resources-categories",
+    ],
+    queryFn: () => (isIndependentResource ? getIndependentCategories() : getCategories()),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 10,
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, formData }: { id: string; formData: FormData }) =>
-      updateResource(id, formData),
+    mutationFn: ({ id, formData }: { id: string; formData: FormData }) => {
+      return isIndependentResource
+        ? updateIndependentResource(id, formData)
+        : updateResource(id, formData);
+    },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["resources"] });
+      queryClient.invalidateQueries({
+        queryKey: [isIndependentResource ? "independent-resources" : "resources"],
+      });
       setIsModalOpen(false);
     },
     onError: (error: any) => {

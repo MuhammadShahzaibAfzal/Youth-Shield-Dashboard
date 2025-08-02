@@ -1,23 +1,23 @@
-import Resources from "./components/Resources";
-import ResourcesCategories from "./components/ResourcesCategories";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Resources from "../resources/components/Resources";
+import ResourcesCategories from "../resources/components/ResourcesCategories";
 
-const ResourcesMangement = () => {
+const IndependentResourcesMangement = () => {
   return (
     <div>
       <Tabs defaultValue="resources" className="w-full my-8">
         <TabsList className="w-full">
-          <TabsTrigger value="resources">Resources</TabsTrigger>
+          <TabsTrigger value="resources">Independent Research </TabsTrigger>
           <TabsTrigger value="categories">Categories</TabsTrigger>
         </TabsList>
         <TabsContent value="resources">
-          <Resources isIndependentResource={false} />
+          <Resources isIndependentResource={true} />
         </TabsContent>
         <TabsContent value="categories">
-          <ResourcesCategories isIndependentResource={false} />
+          <ResourcesCategories isIndependentResource={true} />
         </TabsContent>
       </Tabs>
     </div>
   );
 };
-export default ResourcesMangement;
+export default IndependentResourcesMangement;

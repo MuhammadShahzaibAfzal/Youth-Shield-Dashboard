@@ -15,8 +15,9 @@ import DeleteResource from "./DeleteResource";
 import UpdateResource from "./UpdateResource";
 import { Button } from "@/components/ui/button";
 import { FaDownload, FaGlobe } from "react-icons/fa";
+import { getIndependentResources } from "@/http/indepResources";
 
-const Resources = () => {
+const Resources = ({ isIndependentResource }: { isIndependentResource: boolean }) => {
   const { data } = useQuery<{
     resources: IResource[];
     total: number;
@@ -24,8 +25,8 @@ const Resources = () => {
     currentPage: number;
     totalPages: number;
   }>({
-    queryKey: ["resources"],
-    queryFn: () => getResources(),
+    queryKey: [isIndependentResource ? "independent-resources" : "resources"],
+    queryFn: () => (isIndependentResource ? getIndependentResources() : getResources()),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 10, // 1 minute
   });
@@ -33,10 +34,18 @@ const Resources = () => {
     <div>
       <div className="flex items-center mb-4 justify-between gap-4">
         <div className="flex flex-col gap-2">
-          <h1 className="text-xl font-medium">Resources Management</h1>
-          <p>Manage your resources.</p>
+          <h1 className="text-xl font-medium">
+            {isIndependentResource
+              ? "Independent Research  Management"
+              : "Resources Management"}
+          </h1>
+          <p>
+            {isIndependentResource
+              ? "Manage your independent research resources"
+              : "Manage your resources"}
+          </p>
         </div>
-        <AddResource />
+        <AddResource isIndependentResource={isIndependentResource} />
       </div>
 
       <Table>
@@ -74,8 +83,14 @@ const Resources = () => {
                       </Button>
                     )}
 
-                    <UpdateResource resource={item} />
-                    <DeleteResource resource={item} />
+                    <UpdateResource
+                      resource={item}
+                      isIndependentResource={isIndependentResource}
+                    />
+                    <DeleteResource
+                      resource={item}
+                      isIndependentResource={isIndependentResource}
+                    />
                   </div>
                 </TableCell>
               </TableRow>

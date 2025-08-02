@@ -14,11 +14,18 @@ import {
 import { formatTimestamp } from "@/lib/utils";
 import UpdateResourceCategory from "./UpdateResourceCategory";
 import DeleteResourceCategory from "./DeleteResourceCategory";
+import { getIndependentCategories } from "@/http/indepResources";
 
-const ResourcesCategories = () => {
+const ResourcesCategories = ({
+  isIndependentResource,
+}: {
+  isIndependentResource: boolean;
+}) => {
   const { data } = useQuery<IResourceCategory[]>({
-    queryKey: ["resouces-categories"],
-    queryFn: () => getCategories(),
+    queryKey: [
+      isIndependentResource ? "independent-resources-categories" : "resources-categories",
+    ],
+    queryFn: () => (isIndependentResource ? getIndependentCategories() : getCategories()),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 10, // 1 minute
   });
@@ -28,7 +35,7 @@ const ResourcesCategories = () => {
         <div className="flex flex-col gap-2">
           <h1 className="text-xl font-medium">Resources Categories</h1>
         </div>
-        <AddResourceCategory />
+        <AddResourceCategory isIndependentResource={isIndependentResource} />
       </div>
 
       <Table>
@@ -49,8 +56,14 @@ const ResourcesCategories = () => {
                 <TableCell>{formatTimestamp(category.createdAt)}</TableCell>
                 <TableCell>
                   <div className="flex gap-4">
-                    <UpdateResourceCategory category={category} />
-                    <DeleteResourceCategory category={category} />
+                    <UpdateResourceCategory
+                      category={category}
+                      isIndependentResource={isIndependentResource}
+                    />
+                    <DeleteResourceCategory
+                      category={category}
+                      isIndependentResource={isIndependentResource}
+                    />
                   </div>
                 </TableCell>
               </TableRow>

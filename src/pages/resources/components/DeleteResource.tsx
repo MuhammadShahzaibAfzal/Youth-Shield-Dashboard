@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import AlertModel from "@/components/customs/AlertModel";
 import { Button } from "@/components/ui/button";
+import { deleteIndependentResource } from "@/http/indepResources";
 import { deleteResource } from "@/http/resources";
 import type { IResource } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -8,15 +9,21 @@ import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 import { toast } from "sonner";
 
-const DeleteResource = ({ resource }: { resource: IResource }) => {
+const DeleteResource = ({
+  resource,
+  isIndependentResource = false,
+}: {
+  resource: IResource;
+  isIndependentResource?: boolean;
+}) => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const deleteMutation = useMutation({
-    mutationFn: deleteResource,
+    mutationFn: isIndependentResource ? deleteIndependentResource : deleteResource,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["resources"],
+        queryKey: [isIndependentResource ? "independent-resources" : "resources"],
       });
     },
     onError: (error: any) => {

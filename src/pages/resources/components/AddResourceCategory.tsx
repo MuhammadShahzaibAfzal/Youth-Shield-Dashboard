@@ -4,13 +4,18 @@ import { Model } from "@/components/customs/Model";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { addIndependentCategory } from "@/http/indepResources";
 import { addCategory } from "@/http/resources";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "sonner";
 
-const AddResourceCategory = () => {
+const AddResourceCategory = ({
+  isIndependentResource = false,
+}: {
+  isIndependentResource?: boolean;
+}) => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
@@ -18,10 +23,14 @@ const AddResourceCategory = () => {
   const [description, setDescription] = useState("");
 
   const addMutation = useMutation({
-    mutationFn: addCategory,
+    mutationFn: isIndependentResource ? addIndependentCategory : addCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["resouces-categories"],
+        queryKey: [
+          isIndependentResource
+            ? "independent-resources-categories"
+            : "resources-categories",
+        ],
       });
 
       setName("");

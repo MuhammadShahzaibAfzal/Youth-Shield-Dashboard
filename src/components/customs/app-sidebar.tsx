@@ -15,7 +15,15 @@ import {
   MdLogout,
   MdAssignment,
 } from "react-icons/md";
-import { FaCalendarCheck, FaNewspaper, FaRegUser, FaTrophy } from "react-icons/fa";
+import { GiMaterialsScience } from "react-icons/gi";
+
+import {
+  FaBookOpen,
+  FaCalendarCheck,
+  FaNewspaper,
+  FaRegUser,
+  FaTrophy,
+} from "react-icons/fa";
 import { useTheme } from "./theme-provider";
 import useLogout from "@/hooks/useLogout";
 
@@ -53,7 +61,13 @@ const items = [
   {
     title: "Resources Management",
     url: "/dashboard/resources-management",
-    icon: MdAssignment,
+    icon: FaBookOpen,
+  },
+
+  {
+    title: "Independent Research Management",
+    url: "/dashboard/independent-research",
+    icon: GiMaterialsScience,
   },
 
   {

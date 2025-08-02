@@ -15,7 +15,7 @@ export interface IUser {
 export interface ICategory {
   _id: string;
   name: string;
-  description?:string;
+  description?: string;
   // icon?:string;
   createdAt: Date;
   updatedAt: Date;
@@ -171,14 +171,34 @@ export interface IResourceCategory {
   _id: string;
   name: string;
   description?: string;
-  icon?:string;
+  icon?: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-export interface IResource extends Document {
+export interface IResource {
   _id: string;
   categoryId: IResourceCategory;
+  name: string;
+  shortDescription: string;
+  url: string;
+  pdfUrl?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IIndependentCategory {
+  _id: string;
+  name: string;
+  description?: string;
+  icon?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface IIndependentResource {
+  _id: string;
+  categoryId: IIndependentCategory;
   name: string;
   shortDescription: string;
   url: string;

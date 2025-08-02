@@ -20,6 +20,7 @@ import EventRegistrations from "./pages/events/EventRegistrations";
 import AddScreening from "./pages/screenings/components/AddScreening";
 import UpdateScreening from "./pages/screenings/components/UpdateScreening";
 import ResourcesMangement from "./pages/resources/ResourcesMangement";
+import IndependentResourcesMangement from "./pages/independent-research/IndependentResearch";
 
 const router = createBrowserRouter([
   {
@@ -105,6 +106,10 @@ const router = createBrowserRouter([
           {
             path: "resources-management",
             element: <ResourcesMangement />,
+          },
+          {
+            path: "independent-research",
+            element: <IndependentResourcesMangement />,
           },
         ],
       },

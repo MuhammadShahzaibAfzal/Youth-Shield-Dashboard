@@ -4,6 +4,7 @@ import { Model } from "@/components/customs/Model";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { addIndependentResource, getIndependentCategories } from "@/http/indepResources";
 import { addResource, getCategories } from "@/http/resources";
 import type { IResourceCategory } from "@/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,10 +12,16 @@ import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { toast } from "sonner";
 
-const AddResource = () => {
+const AddResource = ({
+  isIndependentResource = false,
+}: {
+  isIndependentResource?: boolean;
+}) => {
   const { data: categories } = useQuery<IResourceCategory[]>({
-    queryKey: ["resources-categories"],
-    queryFn: () => getCategories(),
+    queryKey: [
+      isIndependentResource ? "independent-resources-categories" : "resources-categories",
+    ],
+    queryFn: () => (isIndependentResource ? getIndependentCategories() : getCategories()),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 10, // 1 minute
   });
@@ -28,9 +35,11 @@ const AddResource = () => {
   const [categoryId, setCategoryId] = useState("");
 
   const addMutation = useMutation({
-    mutationFn: addResource,
+    mutationFn: isIndependentResource ? addIndependentResource : addResource,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["resources"] });
+      queryClient.invalidateQueries({
+        queryKey: [isIndependentResource ? "independent-resources" : "resources"],
+      });
       setName("");
       setShortDescription("");
       setUrl("");

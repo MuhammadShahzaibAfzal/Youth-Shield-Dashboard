@@ -10,11 +10,14 @@ import { useEffect, useState } from "react";
 import { FaPencilAlt } from "react-icons/fa";
 import { toast } from "sonner";
 import IconSelector from "@/components/customs/IconSelector"; // ✅ Import IconSelector
+import { updateIndependentCategory } from "@/http/indepResources";
 
 const UpdateResourceCategory = ({
   category,
+  isIndependentResource,
 }: {
   category: IResourceCategory;
+  isIndependentResource?: boolean;
 }) => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,10 +26,14 @@ const UpdateResourceCategory = ({
   const [description, setDescription] = useState("");
 
   const updateMutation = useMutation({
-    mutationFn: updateCategory,
+    mutationFn: isIndependentResource ? updateIndependentCategory : updateCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["resouces-categories"],
+        queryKey: [
+          isIndependentResource
+            ? "independent-resources-categories"
+            : "resources-categories",
+        ],
       });
       setIsModalOpen(false);
       setName("");
@@ -53,11 +60,7 @@ const UpdateResourceCategory = ({
 
   return (
     <div>
-      <Button
-        size={"icon"}
-        onClick={() => setIsModalOpen(true)}
-        variant={"outline"}
-      >
+      <Button size={"icon"} onClick={() => setIsModalOpen(true)} variant={"outline"}>
         <FaPencilAlt />
       </Button>
       <Model
