@@ -91,3 +91,18 @@ export const getIndependentResourcesByCategory = async (categoryId: string) => {
   const { data } = await api.get(`/independent-research/category/${categoryId}`);
   return data;
 };
+
+export const getRegisteredResearches = async ({
+  page,
+  limit,
+  search,
+}: {
+  page: number;
+  limit: number;
+  search: string;
+}) => {
+  const { data } = await api.get(`/research-registrations`, {
+    params: { page, limit, search },
+  });
+  return data;
+};

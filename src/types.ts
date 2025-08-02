@@ -206,3 +206,19 @@ export interface IIndependentResource {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface IResearchRegistration {
+  _id: string;
+  firstName: string;
+  language: string;
+  grade: string;
+  highSchool: string;
+  country: {
+    name: string;
+    code: string;
+  };
+  city: string;
+  selectedResearch: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
