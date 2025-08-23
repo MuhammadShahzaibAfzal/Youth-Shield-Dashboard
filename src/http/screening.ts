@@ -31,3 +31,13 @@ export const updateScreening = async (id: string, data: FormData) => {
     },
   });
 };
+
+export const getAnonymousScreeningSubmissions = async (params: string) => {
+  const { data } = await api.get(`/anonymous-screening-submissions?${params}`);
+  return data;
+};
+
+export const getScreeningSubmissions = async (params: string) => {
+  const { data } = await api.get(`/screening-submissions?${params}`);
+  return data;
+};
