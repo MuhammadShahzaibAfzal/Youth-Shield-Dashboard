@@ -21,6 +21,7 @@ import AddScreening from "./pages/screenings/components/AddScreening";
 import UpdateScreening from "./pages/screenings/components/UpdateScreening";
 import ResourcesMangement from "./pages/resources/ResourcesMangement";
 import IndependentResourcesMangement from "./pages/independent-research/IndependentResearch";
+import Schools from "./pages/schools/Schools";
 
 const router = createBrowserRouter([
   {
@@ -110,6 +111,10 @@ const router = createBrowserRouter([
           {
             path: "independent-research",
             element: <IndependentResourcesMangement />,
+          },
+          {
+            path: "schools",
+            element: <Schools />,
           },
         ],
       },

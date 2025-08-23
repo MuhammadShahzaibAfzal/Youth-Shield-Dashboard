@@ -22,6 +22,7 @@ import {
   FaCalendarCheck,
   FaNewspaper,
   FaRegUser,
+  FaSchool,
   FaTrophy,
 } from "react-icons/fa";
 import { useTheme } from "./theme-provider";
@@ -68,6 +69,12 @@ const items = [
     title: "Independent Research Management",
     url: "/dashboard/independent-research",
     icon: GiMaterialsScience,
+  },
+
+  {
+    title: "Schools Management",
+    url: "/dashboard/schools",
+    icon: FaSchool,
   },
 
   {
