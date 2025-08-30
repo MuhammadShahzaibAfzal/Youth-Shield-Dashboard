@@ -13,7 +13,7 @@ export const createSchool = async (data: { name: string; isApproved?: boolean })
 
 export const updateSchool = async (
   id: string,
-  data: { name?: string; isApproved?: boolean }
+  data: { name?: string; isApproved?: boolean; isDeleted?: boolean }
 ) => {
   const { data: res } = await api.put(`/auth/admin/schools/${id}`, data);
   return res;

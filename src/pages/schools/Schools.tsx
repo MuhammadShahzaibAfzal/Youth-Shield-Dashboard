@@ -22,6 +22,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { debounce } from "lodash";
+import DeleteSchool from "./components/DeleteSchool";
 
 interface ISchool {
   name: string;
@@ -185,7 +186,10 @@ const Schools = () => {
                 )}
               </TableCell>
               <TableCell>
-                <EditSchool school={school} />
+                <div className="flex gap-3 items-center">
+                  <EditSchool school={school} />
+                  <DeleteSchool school={school} />
+                </div>
               </TableCell>
             </TableRow>
           ))}
