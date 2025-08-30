@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Model } from "@/components/customs/Model";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createSchool as addSchool } from "@/http/school";
@@ -14,7 +14,7 @@ const AddSchool = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [name, setName] = useState("");
-  const [isApproved, setIsApproved] = useState(false);
+  // const [isApproved, setIsApproved] = useState(false);
 
   const addMutation = useMutation({
     mutationFn: addSchool,
@@ -39,7 +39,7 @@ const AddSchool = () => {
       toast.error("School name is required");
       return;
     }
-    addMutation.mutate({ name, isApproved });
+    addMutation.mutate({ name });
   };
 
   return (
@@ -66,7 +66,7 @@ const AddSchool = () => {
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <Checkbox
               checked={isApproved}
               onCheckedChange={(e) => {
@@ -76,7 +76,7 @@ const AddSchool = () => {
             <Label className="-mb-1" htmlFor="isApproved">
               Approved
             </Label>
-          </div>
+          </div> */}
         </div>
       </Model>
     </div>
