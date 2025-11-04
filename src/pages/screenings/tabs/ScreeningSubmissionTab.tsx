@@ -79,7 +79,7 @@ export interface IScreeningSubmission {
 
 const ScreeningSubmissionTab = ({ screeningID }: { screeningID: string }) => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit] = useState(10);
   const [selectedSubmission, setSelectedSubmission] =
     useState<IScreeningSubmission | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
