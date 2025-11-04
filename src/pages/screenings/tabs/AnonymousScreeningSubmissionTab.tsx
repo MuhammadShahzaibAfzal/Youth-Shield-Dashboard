@@ -68,7 +68,7 @@ export interface IAnonymousScreeningSubmission {
 
 const AnonymousScreeningSubmissionTab = ({ screeningID }: { screeningID: string }) => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  const [limit] = useState(10);
   const [selectedSubmission, setSelectedSubmission] =
     useState<IAnonymousScreeningSubmission | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
